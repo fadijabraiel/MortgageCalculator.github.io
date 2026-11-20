@@ -1,0 +1,16 @@
+{
+  "id": "mortgage-pro-root",
+  "name": "Mortgage Pro Calculator",
+  "short_name": "Mortgage Pro",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#131314",
+  "theme_color": "#1e1f22",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

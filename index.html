@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mortgage Repayment Calculator</title>
+  <title>Mortgage Pro Calculator</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1e1f22" />
+  <link rel="icon" type="image/png" href="icon.png" />
   <style>
     :root {
-      --bg: #121316;
+      --bg: #131314;
       --card: #1e1f22;
-      --surface: #282a2e;
-      --border: #383a40;
-      --text: #f3f4f6;
-      --muted: #9ca3af;
-      --blue: #4285f4;
-      --blue-hover: #5a95f5;
+      --input-bg: #2b2c30;
+      --border: #33353a;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --blue: #4c8bf5;
       --yellow: #fbbc04;
+      --track: #3c4043;
     }
 
     * {
@@ -35,77 +36,72 @@
 
     .container {
       background: var(--card);
-      max-width: 480px;
+      max-width: 500px;
       width: 100%;
-      padding: 20px 18px 24px;
+      padding: 20px;
       border-radius: 16px;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border);
     }
 
-    .header-top {
+    .header-row {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-    }
-
-    .main-label {
-      font-size: 0.85rem;
-      color: var(--muted);
+      align-items: center;
       margin-bottom: 4px;
     }
 
-    .main-value {
-      font-size: 2.15rem;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.5px;
-      margin: 0 0 18px;
+    .label-muted {
+      font-size: 0.85rem;
+      color: var(--muted);
     }
 
     .reset-btn {
-      background: var(--surface);
-      color: var(--muted);
+      background: var(--input-bg);
+      color: var(--text);
       border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 8px;
+      padding: 5px 12px;
+      border-radius: 6px;
       font-size: 0.78rem;
       cursor: pointer;
-      transition: all 0.15s;
     }
 
     .reset-btn:hover {
-      color: var(--text);
-      border-color: var(--blue);
+      background: #383a40;
     }
 
-    .summary-row {
+    .hero-amount {
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin: 2px 0 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .stats-row {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       padding-bottom: 18px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 16px;
     }
 
-    .summary-item span {
+    .stat-box span {
       display: block;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--muted);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
-    .summary-item strong {
-      font-size: 1.02rem;
+    .stat-box strong {
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--text);
     }
 
     .legend {
       display: flex;
       gap: 18px;
+      margin: 16px 0 12px;
       font-size: 0.82rem;
       color: var(--text);
-      margin-bottom: 14px;
     }
 
     .legend-item {
@@ -121,26 +117,23 @@
       display: inline-block;
     }
 
-    .dot.blue { background: var(--blue); }
-    .dot.yellow { background: var(--yellow); }
-
     .chart-wrapper {
       display: flex;
       gap: 8px;
-      margin-bottom: 24px;
-      user-select: none;
+      height: 185px;
+      margin-bottom: 22px;
+      padding-top: 6px;
     }
 
     .y-axis {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 165px;
+      text-align: right;
       font-size: 0.72rem;
       color: var(--muted);
-      text-align: right;
       padding-bottom: 18px;
-      min-width: 34px;
+      min-width: 38px;
     }
 
     .chart-area {
@@ -150,12 +143,12 @@
     }
 
     .bars-container {
-      height: 147px;
+      flex: 1;
       display: flex;
       align-items: flex-end;
-      gap: 2px;
+      gap: 3px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 1px;
+      padding-bottom: 2px;
     }
 
     .bar-col {
@@ -164,18 +157,18 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      border-radius: 2px 2px 0 0;
-      overflow: hidden;
+      min-width: 2px;
     }
 
     .bar-interest {
-      background: var(--yellow);
+      background-color: var(--yellow);
       width: 100%;
+      border-radius: 2px 2px 0 0;
       transition: height 0.2s ease;
     }
 
     .bar-principal {
-      background: var(--blue);
+      background-color: var(--blue);
       width: 100%;
       transition: height 0.2s ease;
     }
@@ -183,115 +176,88 @@
     .x-axis {
       display: flex;
       justify-content: space-between;
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--muted);
-      padding-top: 6px;
+      padding-top: 5px;
     }
 
     .control-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .control-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .control-header label {
-      font-size: 0.9rem;
-      color: var(--text);
+      font-size: 0.92rem;
       font-weight: 500;
     }
 
-    .num-input-wrap {
-      display: flex;
-      align-items: center;
-      background: var(--surface);
+    .num-input {
+      background: var(--input-bg);
+      color: var(--text);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 6px 10px;
-    }
-
-    .num-input-wrap:focus-within {
-      border-color: var(--blue);
-    }
-
-    .num-input-wrap input {
-      background: transparent;
-      border: none;
-      color: var(--text);
+      padding: 7px 10px;
       font-size: 0.95rem;
       font-weight: 600;
       text-align: right;
-      width: 90px;
-      outline: none;
+      width: 120px;
     }
 
-    .num-input-wrap.small input {
-      width: 44px;
+    .num-input:focus {
+      outline: none;
+      border-color: var(--blue);
     }
 
     .term-inputs {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
     }
 
-    .unit-tag {
+    .term-inputs .num-input {
+      width: 64px;
+      text-align: center;
+    }
+
+    .term-unit {
       font-size: 0.78rem;
       color: var(--muted);
-      margin-left: 4px;
-    }
-
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
     }
 
     input[type="range"] {
       -webkit-appearance: none;
-      appearance: none;
-      flex: 1;
-      height: 4px;
-      border-radius: 2px;
-      background: #3c4043;
+      width: 100%;
+      height: 5px;
+      background: var(--track);
+      border-radius: 4px;
       outline: none;
-      cursor: pointer;
+      margin: 6px 0 4px;
     }
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      appearance: none;
       width: 18px;
       height: 18px;
       border-radius: 50%;
       background: var(--blue);
       cursor: pointer;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
     }
 
-    input[type="range"]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--blue);
-      border: none;
-      cursor: pointer;
-    }
-
-    .slider-val {
-      min-width: 72px;
+    .slider-readout {
       text-align: right;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--text);
     }
 
-    .freq-box {
-      margin-top: 22px;
+    .au-breakdown {
+      margin-top: 18px;
       padding-top: 16px;
       border-top: 1px solid var(--border);
       display: grid;
@@ -299,62 +265,59 @@
       gap: 10px;
     }
 
-    .freq-card {
-      background: var(--surface);
+    .au-item {
+      background: var(--input-bg);
       padding: 10px 12px;
-      border-radius: 10px;
+      border-radius: 8px;
     }
 
-    .freq-card span {
+    .au-item span {
       display: block;
       font-size: 0.74rem;
       color: var(--muted);
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
-    .freq-card strong {
-      font-size: 0.96rem;
-      color: var(--text);
+    .au-item strong {
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="header-top">
-    <div>
-      <div class="main-label">Estimated Monthly Payment</div>
-      <div class="main-value" id="monthlyOut">$0.00</div>
-    </div>
+  <div class="header-row">
+    <span class="label-muted">Estimated Monthly Payment</span>
     <button class="reset-btn" id="resetBtn" type="button">Reset</button>
   </div>
+  <div class="hero-amount" id="monthlyOut">$2,310.81</div>
 
-  <div class="summary-row">
-    <div class="summary-item">
+  <div class="stats-row">
+    <div class="stat-box">
       <span>Total Interest</span>
-      <strong id="totalInterestOut">$0</strong>
+      <strong id="totalInterestOut">$199,291</strong>
     </div>
-    <div class="summary-item">
+    <div class="stat-box">
       <span>Total Payments</span>
-      <strong id="totalPaymentsOut">$0</strong>
+      <strong id="totalPaymentsOut">$487,580</strong>
     </div>
-    <div class="summary-item">
+    <div class="stat-box">
       <span>Payoff Time</span>
-      <strong id="payoffTimeOut">0 yrs</strong>
+      <strong id="payoffTimeOut">17y 7m</strong>
     </div>
   </div>
 
   <div class="legend">
-    <div class="legend-item"><span class="dot blue"></span> Principal Paid</div>
-    <div class="legend-item"><span class="dot yellow"></span> Interest Paid</div>
+    <div class="legend-item"><span class="dot" style="background: var(--blue);"></span> Principal Paid</div>
+    <div class="legend-item"><span class="dot" style="background: var(--yellow);"></span> Interest Paid</div>
   </div>
 
   <div class="chart-wrapper">
     <div class="y-axis" id="yAxis">
-      <span>$0</span>
-      <span>$0</span>
-      <span>$0</span>
-      <span>$0</span>
+      <span>$28k</span>
+      <span>$21k</span>
+      <span>$14k</span>
+      <span>$7k</span>
       <span>$0</span>
     </div>
     <div class="chart-area">
@@ -366,367 +329,267 @@
   <!-- Loan Amount -->
   <div class="control-group">
     <div class="control-header">
-      <label for="principalInput">Loan Amount</label>
-      <div class="num-input-wrap">
-        <input type="number" id="principalInput" value="" min="0" max="3000000" step="1000" />
-      </div>
+      <label for="principalNum">Loan Amount</label>
+      <input type="number" class="num-input" id="principalNum" value="288289" min="0" step="1000" />
     </div>
-    <div class="slider-row">
-      <input type="range" id="principalSlider" value="" min="0" max="1500000" step="1000" />
-      <span class="slider-val" id="principalBadge">$288k</span>
-    </div>
+    <input type="range" id="principalSlider" min="0" max="2000000" step="5000" value="288289" />
+    <div class="slider-readout" id="principalReadout">$288k</div>
   </div>
 
   <!-- Annual Interest Rate -->
   <div class="control-group">
     <div class="control-header">
-      <label for="rateInput">Annual Interest Rate</label>
-      <div class="num-input-wrap small">
-        <input type="number" id="rateInput" value="" min="0" max="20" step="0.01" />
-        <span class="unit-tag">%</span>
-      </div>
+      <label for="rateNum">Annual Interest Rate</label>
+      <input type="number" class="num-input" id="rateNum" value="6.59" min="0" max="25" step="0.01" />
     </div>
-    <div class="slider-row">
-      <input type="range" id="rateSlider" value="" min="0" max="15" step="0.05" />
-      <span class="slider-val" id="rateBadge">6.59%</span>
-    </div>
+    <input type="range" id="rateSlider" min="0" max="15" step="0.05" value="6.59" />
+    <div class="slider-readout" id="rateReadout">6.59%</div>
   </div>
 
-  <!-- Loan Term (Years & Months) -->
+  <!-- Loan Term -->
   <div class="control-group">
     <div class="control-header">
       <label>Loan Term</label>
       <div class="term-inputs">
-        <div class="num-input-wrap small">
-          <input type="number" id="yearsInput" value="" min="0" max="40" step="1" />
-          <span class="unit-tag">yrs</span>
-        </div>
-        <div class="num-input-wrap small">
-          <input type="number" id="monthsInput" value="" min="0" max="11" step="1" />
-          <span class="unit-tag">mths</span>
-        </div>
+        <input type="number" class="num-input" id="yearsNum" value="17" min="0" max="40" />
+        <span class="term-unit">yrs</span>
+        <input type="number" class="num-input" id="monthsNum" value="7" min="0" max="11" />
+        <span class="term-unit">mths</span>
       </div>
     </div>
-    <div class="slider-row">
-      <input type="range" id="termSlider" value="211" min="0" max="480" step="1" />
-      <span class="slider-val" id="termBadge">17y 7m</span>
-    </div>
+    <input type="range" id="yearsSlider" min="1" max="40" step="1" value="17" />
+    <div class="slider-readout" id="termReadout">17 yrs 7 mths</div>
   </div>
 
   <!-- Extra Monthly Payment -->
-  <div class="control-group" style="margin-bottom: 0;">
+  <div class="control-group">
     <div class="control-header">
-      <label for="extraInput">Extra Monthly Payment</label>
-      <div class="num-input-wrap small">
-        <input type="number" id="extraInput" value="0" min="0" max="20000" step="50" />
-      </div>
+      <label for="extraNum">Extra Monthly Payment</label>
+      <input type="number" class="num-input" id="extraNum" value="0" min="0" step="50" />
     </div>
-    <div class="slider-row">
-      <input type="range" id="extraSlider" value="0" min="0" max="5000" step="50" />
-      <span class="slider-val" id="extraBadge">$0/mo</span>
-    </div>
+    <input type="range" id="extraSlider" min="0" max="5000" step="50" value="0" />
+    <div class="slider-readout" id="extraReadout">$0/mo</div>
   </div>
 
-  <!-- Australian Frequency & Current Interest Breakdown -->
-  <div class="freq-box">
-    <div class="freq-card">
+  <!-- Australian Breakdown -->
+  <div class="au-breakdown">
+    <div class="au-item">
       <span>Current Monthly Interest</span>
-      <strong id="currInterestOut">$0.00</strong>
+      <strong id="curInterestOut">$1,583.19</strong>
     </div>
-    <div class="freq-card">
+    <div class="au-item">
       <span>Current Monthly Principal</span>
-      <strong id="currPrincipalOut">$0.00</strong>
+      <strong id="curPrincipalOut">$727.62</strong>
     </div>
-    <div class="freq-card">
-      <span>Fortnightly (True / Half)</span>
-      <strong id="fortnightlyOut">$0 / $0</strong>
+    <div class="au-item">
+      <span>Fortnightly (True)</span>
+      <strong id="fortnightlyOut">$1,065.69</strong>
     </div>
-    <div class="freq-card">
-      <span>Weekly (True / Quarter)</span>
-      <strong id="weeklyOut">$0 / $0</strong>
+    <div class="au-item">
+      <span>Weekly (True)</span>
+      <strong id="weeklyOut">$532.67</strong>
     </div>
   </div>
 </div>
 
 <script>
-  const audExact = new Intl.NumberFormat('en-AU', {
-    style: 'currency',
-    currency: 'AUD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+  const audExact = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const audWhole = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', maximumFractionDigits: 0 });
 
-  const audWhole = new Intl.NumberFormat('en-AU', {
-    style: 'currency',
-    currency: 'AUD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  });
-
-  function formatCompactK(val) {
-    if (val >= 1000000) {
-      return '$' + (val / 1000000).toFixed(2).replace(/\.00$/, '') + 'M';
-    }
-    if (val >= 1000) {
-      return '$' + Math.round(val / 1000) + 'k';
-    }
+  function formatShortK(val) {
+    if (val === 0) return '$0';
+    if (val >= 1000000) return '$' + (val / 1000000).toFixed(2).replace(/\.00$/, '') + 'M';
+    if (val >= 1000) return '$' + Math.round(val / 1000) + 'k';
     return '$' + Math.round(val);
+  }
+
+  function pmt(r, n, pv) {
+    if (n <= 0 || pv <= 0) return 0;
+    if (r === 0) return pv / n;
+    const f = Math.pow(1 + r, n);
+    return (pv * r * f) / (f - 1);
   }
 
   function updateSliderFill(slider) {
     const min = parseFloat(slider.min) || 0;
     const max = parseFloat(slider.max) || 100;
-    const val = Math.min(max, Math.max(min, parseFloat(slider.value) || 0));
-    const pct = ((val - min) / (max - min)) * 100;
-    slider.style.background = `linear-gradient(to right, #4285f4 0%, #4285f4 ${pct}%, #3c4043 ${pct}%, #3c4043 100%)`;
-  }
-
-  function pmt(rate, nper, pv) {
-    if (nper <= 0 || pv <= 0) return 0;
-    if (rate === 0) return pv / nper;
-    const f = Math.pow(1 + rate, nper);
-    return (pv * rate * f) / (f - 1);
-  }
-
-  function formatDuration(totalMonths) {
-    if (totalMonths <= 0) return '0 yrs';
-    const y = Math.floor(totalMonths / 12);
-    const m = totalMonths % 12;
-    if (m === 0) return `${y} year${y === 1 ? '' : 's'}`;
-    if (y === 0) return `${m} mth${m === 1 ? '' : 's'}`;
-    return `${y}y ${m}m`;
+    const val = parseFloat(slider.value) || 0;
+    const pct = Math.min(100, Math.max(0, ((val - min) / (max - min)) * 100));
+    slider.style.background = `linear-gradient(to right, #4c8bf5 ${pct}%, #3c4043 ${pct}%)`;
   }
 
   function calculate() {
-    const principal = Math.max(0, parseFloat(document.getElementById('principalInput').value) || 0);
-    const annualRate = Math.max(0, parseFloat(document.getElementById('rateInput').value) || 0);
-    const years = Math.max(0, parseInt(document.getElementById('yearsInput').value, 10) || 0);
-    const months = Math.min(11, Math.max(0, parseInt(document.getElementById('monthsInput').value, 10) || 0));
-    const extra = Math.max(0, parseFloat(document.getElementById('extraInput').value) || 0);
+    const P = parseFloat(document.getElementById('principalNum').value) || 0;
+    const annualRate = (parseFloat(document.getElementById('rateNum').value) || 0) / 100;
+    const yrs = parseInt(document.getElementById('yearsNum').value) || 0;
+    const mths = parseInt(document.getElementById('monthsNum').value) || 0;
+    const extra = parseFloat(document.getElementById('extraNum').value) || 0;
 
-    const totalMonths = (years * 12) + months;
-    const totalYearsExact = totalMonths / 12;
-    const r = (annualRate / 100) / 12;
+    const totalMonths = (yrs * 12) + mths;
+    const totalYearsExact = yrs + (mths / 12);
+    const monthlyRate = annualRate / 12;
 
-    const baseMonthly = pmt(r, totalMonths, principal);
-    const effectiveMonthly = principal > 0 && totalMonths > 0 ? baseMonthly + extra : 0;
+    const baseMonthly = pmt(monthlyRate, totalMonths, P);
+    const totalMonthly = P > 0 && totalMonths > 0 ? baseMonthly + extra : 0;
 
-    // Badges
-    document.getElementById('principalBadge').textContent = formatCompactK(principal);
-    document.getElementById('rateBadge').textContent = annualRate.toFixed(2).replace(/\.00$/, '.0') + '%';
-    document.getElementById('termBadge').textContent = totalMonths > 0 ? `${years}y ${months}m` : '0 yrs';
-    document.getElementById('extraBadge').textContent = `${audWhole.format(extra)}/mo`;
+    document.getElementById('principalReadout').textContent = formatShortK(P);
+    document.getElementById('rateReadout').textContent = (annualRate * 100).toFixed(2).replace(/\.00$/, '.0') + '%';
+    document.getElementById('termReadout').textContent = mths > 0 ? `${yrs} yrs ${mths} mths` : `${yrs} yrs`;
+    document.getElementById('extraReadout').textContent = `${audWhole.format(extra)}/mo`;
 
-    // Current Month Split
-    const firstInterest = principal * r;
-    const firstPrincipal = Math.min(principal, Math.max(0, effectiveMonthly - firstInterest));
-    document.getElementById('currInterestOut').textContent = audExact.format(firstInterest);
-    document.getElementById('currPrincipalOut').textContent = audExact.format(firstPrincipal);
+    const firstMonthInterest = P * monthlyRate;
+    const firstMonthPrincipal = Math.min(P, Math.max(0, totalMonthly - firstMonthInterest));
 
-    // Fortnightly & Weekly (based on base scheduled repayment)
-    const fnTrue = pmt((annualRate / 100) / 26, totalYearsExact * 26, principal);
-    const fnHalf = baseMonthly / 2;
-    const wkTrue = pmt((annualRate / 100) / 52, totalYearsExact * 52, principal);
-    const wkQuarter = baseMonthly / 4;
-    document.getElementById('fortnightlyOut').textContent = `${audWhole.format(fnTrue)} / ${audWhole.format(fnHalf)}`;
-    document.getElementById('weeklyOut').textContent = `${audWhole.format(wkTrue)} / ${audWhole.format(wkQuarter)}`;
+    document.getElementById('monthlyOut').textContent = audExact.format(totalMonthly);
+    document.getElementById('curInterestOut').textContent = audExact.format(firstMonthInterest);
+    document.getElementById('curPrincipalOut').textContent = audExact.format(firstMonthPrincipal);
+    document.getElementById('fortnightlyOut').textContent = audExact.format(pmt(annualRate / 26, totalYearsExact * 26, P));
+    document.getElementById('weeklyOut').textContent = audExact.format(pmt(annualRate / 52, totalYearsExact * 52, P));
 
-    // Amortisation simulation by year
-    let balance = principal;
+    let balance = P;
     let totalInterest = 0;
-    let totalPayments = 0;
+    let totalPaid = 0;
     let monthsElapsed = 0;
     const yearlyData = [];
+    let yrPrincipal = 0;
+    let yrInterest = 0;
 
-    if (principal > 0 && totalMonths > 0 && effectiveMonthly > 0) {
-      let yrPrincipal = 0;
-      let yrInterest = 0;
-
-      while (balance > 0.005 && monthsElapsed < 600) {
+    if (P > 0 && totalMonthly > 0) {
+      while (balance > 0.01 && monthsElapsed < 600) {
         monthsElapsed++;
-        const interestForMonth = balance * r;
-        let principalForMonth = effectiveMonthly - interestForMonth;
-
-        if (principalForMonth <= 0 && r > 0) {
-          // Payment doesn't cover interest; cap loop
-          yrInterest += interestForMonth;
-          totalInterest += interestForMonth;
-          totalPayments += effectiveMonthly;
-          if (monthsElapsed % 12 === 0 || monthsElapsed === totalMonths) {
-            yearlyData.push({ year: Math.ceil(monthsElapsed / 12), principal: yrPrincipal, interest: yrInterest });
-            yrPrincipal = 0;
-            yrInterest = 0;
-          }
-          if (monthsElapsed >= totalMonths) break;
-          continue;
+        const interest = balance * monthlyRate;
+        let principalPaid = totalMonthly - interest;
+        if (principalPaid <= 0 && monthlyRate > 0) {
+          principalPaid = 0;
+          balance = 0;
+        } else if (principalPaid >= balance) {
+          principalPaid = balance;
+          balance = 0;
+        } else {
+          balance -= principalPaid;
         }
 
-        if (principalForMonth > balance) {
-          principalForMonth = balance;
-        }
+        totalInterest += interest;
+        totalPaid += (principalPaid + interest);
+        yrPrincipal += principalPaid;
+        yrInterest += interest;
 
-        const actualPayment = principalForMonth + interestForMonth;
-        balance -= principalForMonth;
-        totalInterest += interestForMonth;
-        totalPayments += actualPayment;
-
-        yrPrincipal += principalForMonth;
-        yrInterest += interestForMonth;
-
-        if (monthsElapsed % 12 === 0 || balance <= 0.005) {
-          yearlyData.push({
-            year: Math.ceil(monthsElapsed / 12),
-            principal: yrPrincipal,
-            interest: yrInterest
-          });
+        if (monthsElapsed % 12 === 0 || balance === 0) {
+          yearlyData.push({ year: Math.ceil(monthsElapsed / 12), principal: yrPrincipal, interest: yrInterest });
           yrPrincipal = 0;
           yrInterest = 0;
         }
       }
     }
 
-    document.getElementById('monthlyOut').textContent = audExact.format(effectiveMonthly);
     document.getElementById('totalInterestOut').textContent = audWhole.format(totalInterest);
-    document.getElementById('totalPaymentsOut').textContent = audWhole.format(totalPayments);
-    document.getElementById('payoffTimeOut').textContent = formatDuration(monthsElapsed);
+    document.getElementById('totalPaymentsOut').textContent = audWhole.format(totalPaid);
+
+    const payYrs = Math.floor(monthsElapsed / 12);
+    const payMths = monthsElapsed % 12;
+    if (monthsElapsed === 0) {
+      document.getElementById('payoffTimeOut').textContent = '0 years';
+    } else if (payMths === 0) {
+      document.getElementById('payoffTimeOut').textContent = `${payYrs} ${payYrs === 1 ? 'year' : 'years'}`;
+    } else {
+      document.getElementById('payoffTimeOut').textContent = `${payYrs}y ${payMths}m`;
+    }
 
     renderChart(yearlyData);
   }
 
-  function renderChart(yearlyData) {
+  function renderChart(data) {
     const barsContainer = document.getElementById('barsContainer');
     const xAxis = document.getElementById('xAxis');
     const yAxis = document.getElementById('yAxis');
-
     barsContainer.innerHTML = '';
     xAxis.innerHTML = '';
 
-    if (yearlyData.length === 0) {
+    if (data.length === 0) {
       yAxis.innerHTML = '<span>$0</span><span>$0</span><span>$0</span><span>$0</span><span>$0</span>';
       return;
     }
 
-    const maxAnnual = Math.max(...yearlyData.map(d => d.principal + d.interest), 1);
+    const maxAnnual = Math.max(...data.map(d => d.principal + d.interest), 1);
+    yAxis.innerHTML = `
+      <span>${formatShortK(maxAnnual)}</span>
+      <span>${formatShortK(maxAnnual * 0.75)}</span>
+      <span>${formatShortK(maxAnnual * 0.5)}</span>
+      <span>${formatShortK(maxAnnual * 0.25)}</span>
+      <span>$0</span>
+    `;
 
-    // Build 5 Y-axis ticks
-    const ticks = [1, 0.75, 0.5, 0.25, 0].map(mult => formatCompactK(maxAnnual * mult));
-    yAxis.innerHTML = ticks.map(t => `<span>${t}</span>`).join('');
-
-    // Render stacked vertical bars
-    yearlyData.forEach(d => {
+    data.forEach(d => {
       const col = document.createElement('div');
       col.className = 'bar-col';
-      col.title = `Yr ${d.year}: Principal ${audWhole.format(d.principal)}, Interest ${audWhole.format(d.interest)}`;
+      col.title = `Yr ${d.year}: Principal ${audWhole.format(d.principal)} | Interest ${audWhole.format(d.interest)}`;
 
-      const pPct = (d.principal / maxAnnual) * 100;
-      const iPct = (d.interest / maxAnnual) * 100;
+      const intPct = (d.interest / maxAnnual) * 100;
+      const priPct = (d.principal / maxAnnual) * 100;
 
-      const intDiv = document.createElement('div');
-      intDiv.className = 'bar-interest';
-      intDiv.style.height = `${iPct}%`;
+      const intBar = document.createElement('div');
+      intBar.className = 'bar-interest';
+      intBar.style.height = `${intPct}%`;
 
-      const priDiv = document.createElement('div');
-      priDiv.className = 'bar-principal';
-      priDiv.style.height = `${pPct}%`;
+      const priBar = document.createElement('div');
+      priBar.className = 'bar-principal';
+      priBar.style.height = `${priPct}%`;
 
-      col.appendChild(intDiv);
-      col.appendChild(priDiv);
+      col.appendChild(intBar);
+      col.appendChild(priBar);
       barsContainer.appendChild(col);
     });
 
-    // Render X-axis labels evenly (up to ~10 labels like Yr 1, Yr 4, Yr 7...)
-    const totalYrs = yearlyData.length;
-    const step = Math.max(1, Math.ceil(totalYrs / 10));
-    for (let i = 0; i < totalYrs; i += step) {
+    const step = Math.max(1, Math.ceil(data.length / 10));
+    for (let i = 0; i < data.length; i += step) {
       const lbl = document.createElement('span');
-      lbl.textContent = `Yr ${yearlyData[i].year}`;
+      lbl.textContent = `Yr ${data[i].year}`;
       xAxis.appendChild(lbl);
     }
   }
 
-  // Sync Inputs & Sliders
-  const principalInput = document.getElementById('principalInput');
-  const principalSlider = document.getElementById('principalSlider');
-  principalInput.addEventListener('input', () => {
-    principalSlider.value = principalInput.value;
-    updateSliderFill(principalSlider);
-    calculate();
-  });
-  principalSlider.addEventListener('input', () => {
-    principalInput.value = principalSlider.value;
-    updateSliderFill(principalSlider);
-    calculate();
-  });
-
-  const rateInput = document.getElementById('rateInput');
-  const rateSlider = document.getElementById('rateSlider');
-  rateInput.addEventListener('input', () => {
-    rateSlider.value = rateInput.value;
-    updateSliderFill(rateSlider);
-    calculate();
-  });
-  rateSlider.addEventListener('input', () => {
-    rateInput.value = rateSlider.value;
-    updateSliderFill(rateSlider);
-    calculate();
-  });
-
-  const yearsInput = document.getElementById('yearsInput');
-  const monthsInput = document.getElementById('monthsInput');
-  const termSlider = document.getElementById('termSlider');
-
-  function syncTermFromInputs() {
-    const y = Math.max(0, parseInt(yearsInput.value, 10) || 0);
-    const m = Math.min(11, Math.max(0, parseInt(monthsInput.value, 10) || 0));
-    termSlider.value = (y * 12) + m;
-    updateSliderFill(termSlider);
-    calculate();
+  function bindPair(numId, sliderId) {
+    const num = document.getElementById(numId);
+    const slider = document.getElementById(sliderId);
+    num.addEventListener('input', () => {
+      slider.value = num.value || 0;
+      updateSliderFill(slider);
+      calculate();
+    });
+    slider.addEventListener('input', () => {
+      num.value = slider.value;
+      updateSliderFill(slider);
+      calculate();
+    });
+    updateSliderFill(slider);
   }
-  yearsInput.addEventListener('input', syncTermFromInputs);
-  monthsInput.addEventListener('input', syncTermFromInputs);
-  termSlider.addEventListener('input', () => {
-    const totalM = parseInt(termSlider.value, 10) || 0;
-    yearsInput.value = Math.floor(totalM / 12);
-    monthsInput.value = totalM % 12;
-    updateSliderFill(termSlider);
-    calculate();
-  });
 
-  const extraInput = document.getElementById('extraInput');
-  const extraSlider = document.getElementById('extraSlider');
-  extraInput.addEventListener('input', () => {
-    extraSlider.value = extraInput.value;
-    updateSliderFill(extraSlider);
-    calculate();
-  });
-  extraSlider.addEventListener('input', () => {
-    extraInput.value = extraSlider.value;
-    updateSliderFill(extraSlider);
-    calculate();
-  });
+  bindPair('principalNum', 'principalSlider');
+  bindPair('rateNum', 'rateSlider');
+  bindPair('yearsNum', 'yearsSlider');
+  bindPair('extraNum', 'extraSlider');
 
-  // Reset Button
+  document.getElementById('monthsNum').addEventListener('input', calculate);
+
   document.getElementById('resetBtn').addEventListener('click', () => {
-    principalInput.value = 0;
-    principalSlider.value = 0;
-    rateInput.value = 0;
-    rateSlider.value = 0;
-    yearsInput.value = 0;
-    monthsInput.value = 0;
-    termSlider.value = 0;
-    extraInput.value = 0;
-    extraSlider.value = 0;
+    document.getElementById('principalNum').value = '';
+    document.getElementById('principalSlider').value = 0;
+    document.getElementById('rateNum').value = '';
+    document.getElementById('rateSlider').value = 0;
+    document.getElementById('yearsNum').value = '';
+    document.getElementById('yearsSlider').value = 1;
+    document.getElementById('monthsNum').value = '';
+    document.getElementById('extraNum').value = '';
+    document.getElementById('extraSlider').value = 0;
     document.querySelectorAll('input[type="range"]').forEach(updateSliderFill);
     calculate();
   });
 
-  // Initialize
-  document.querySelectorAll('input[type="range"]').forEach(updateSliderFill);
-  calculate();
-
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
+
+  calculate();
 </script>
 
 </body>
