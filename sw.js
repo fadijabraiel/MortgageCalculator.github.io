@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mortgage-pro-v1';
+const CACHE_NAME = 'mortgage-pro-v3';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.png'];
 
 self.addEventListener('install', event => {
