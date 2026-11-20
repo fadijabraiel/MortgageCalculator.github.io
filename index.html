@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en-AU">
+<html lang="en-AU" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mortgage Pro Calculator</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#1e1f22" />
+  <meta name="theme-color" content="#1e1f22" id="themeMeta" />
   <link rel="icon" type="image/png" href="icon.png" />
   <style>
-    :root {
+    :root, [data-theme="dark"] {
       --bg: #131314;
       --card: #1e1f22;
       --input-bg: #2b2c30;
@@ -17,7 +17,23 @@
       --muted: #9aa0a6;
       --blue: #4c8bf5;
       --yellow: #fbbc04;
+      --green: #34a853;
       --track: #3c4043;
+      --tab-bg: #25262a;
+    }
+
+    [data-theme="light"] {
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --input-bg: #f1f3f4;
+      --border: #dadce0;
+      --text: #1f2937;
+      --muted: #5f6368;
+      --blue: #0f4c81;
+      --yellow: #f59e0b;
+      --green: #16a34a;
+      --track: #d1d5db;
+      --tab-bg: #e8eaed;
     }
 
     * {
@@ -32,6 +48,7 @@
       padding: 16px 12px 32px;
       display: flex;
       justify-content: center;
+      transition: background-color 0.2s, color 0.2s;
     }
 
     .container {
@@ -43,30 +60,78 @@
       border: 1px solid var(--border);
     }
 
-    .header-row {
+    .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 4px;
+      margin-bottom: 14px;
+      gap: 8px;
+    }
+
+    .app-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .pill-btn {
+      background: var(--input-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .pill-btn:hover {
+      opacity: 0.88;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--tab-bg);
+      padding: 4px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 7px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
     }
 
     .label-muted {
       font-size: 0.85rem;
       color: var(--muted);
-    }
-
-    .reset-btn {
-      background: var(--input-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      cursor: pointer;
-    }
-
-    .reset-btn:hover {
-      background: #383a40;
     }
 
     .hero-amount {
@@ -86,13 +151,13 @@
 
     .stat-box span {
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--muted);
       margin-bottom: 3px;
     }
 
     .stat-box strong {
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 600;
     }
 
@@ -193,7 +258,7 @@
     }
 
     .control-header label {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 500;
     }
 
@@ -221,7 +286,7 @@
     }
 
     .term-inputs .num-input {
-      width: 64px;
+      width: 60px;
       text-align: center;
     }
 
@@ -232,6 +297,7 @@
 
     input[type="range"] {
       -webkit-appearance: none;
+      appearance: none;
       width: 100%;
       height: 5px;
       background: var(--track);
@@ -242,6 +308,7 @@
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
+      appearance: none;
       width: 18px;
       height: 18px;
       border-radius: 50%;
@@ -251,7 +318,7 @@
 
     .slider-readout {
       text-align: right;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: var(--text);
     }
@@ -281,114 +348,220 @@
     .au-item strong {
       font-size: 0.95rem;
     }
+
+    /* Paid Down After Time Tab */
+    .equity-hero {
+      background: var(--input-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border);
+    }
+
+    .equity-hero .hero-amount {
+      margin: 4px 0 12px;
+      color: var(--green);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--track);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="header-row">
+  <div class="top-bar">
+    <div class="app-title">Mortgage Pro</div>
+    <div class="top-actions">
+      <button class="pill-btn" id="themeBtn" type="button">☀️ Light</button>
+      <button class="pill-btn" id="resetBtn" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="repaymentsTab" type="button">Repayments &amp; Chart</button>
+    <button class="tab-btn" data-tab="paidDownTab" type="button">Paid Down After Time</button>
+  </div>
+
+  <!-- TAB 1: REPAYMENTS & STACKED CHART -->
+  <div id="repaymentsTab" class="tab-panel active">
     <span class="label-muted">Estimated Monthly Payment</span>
-    <button class="reset-btn" id="resetBtn" type="button">Reset</button>
-  </div>
-  <div class="hero-amount" id="monthlyOut">$2,310.81</div>
+    <div class="hero-amount" id="monthlyOut">$2,310.81</div>
 
-  <div class="stats-row">
-    <div class="stat-box">
-      <span>Total Interest</span>
-      <strong id="totalInterestOut">$199,291</strong>
-    </div>
-    <div class="stat-box">
-      <span>Total Payments</span>
-      <strong id="totalPaymentsOut">$487,580</strong>
-    </div>
-    <div class="stat-box">
-      <span>Payoff Time</span>
-      <strong id="payoffTimeOut">17y 7m</strong>
-    </div>
-  </div>
-
-  <div class="legend">
-    <div class="legend-item"><span class="dot" style="background: var(--blue);"></span> Principal Paid</div>
-    <div class="legend-item"><span class="dot" style="background: var(--yellow);"></span> Interest Paid</div>
-  </div>
-
-  <div class="chart-wrapper">
-    <div class="y-axis" id="yAxis">
-      <span>$28k</span>
-      <span>$21k</span>
-      <span>$14k</span>
-      <span>$7k</span>
-      <span>$0</span>
-    </div>
-    <div class="chart-area">
-      <div class="bars-container" id="barsContainer"></div>
-      <div class="x-axis" id="xAxis"></div>
-    </div>
-  </div>
-
-  <!-- Loan Amount -->
-  <div class="control-group">
-    <div class="control-header">
-      <label for="principalNum">Loan Amount</label>
-      <input type="number" class="num-input" id="principalNum" value="288289" min="0" step="1000" />
-    </div>
-    <input type="range" id="principalSlider" min="0" max="2000000" step="5000" value="288289" />
-    <div class="slider-readout" id="principalReadout">$288k</div>
-  </div>
-
-  <!-- Annual Interest Rate -->
-  <div class="control-group">
-    <div class="control-header">
-      <label for="rateNum">Annual Interest Rate</label>
-      <input type="number" class="num-input" id="rateNum" value="6.59" min="0" max="25" step="0.01" />
-    </div>
-    <input type="range" id="rateSlider" min="0" max="15" step="0.05" value="6.59" />
-    <div class="slider-readout" id="rateReadout">6.59%</div>
-  </div>
-
-  <!-- Loan Term -->
-  <div class="control-group">
-    <div class="control-header">
-      <label>Loan Term</label>
-      <div class="term-inputs">
-        <input type="number" class="num-input" id="yearsNum" value="17" min="0" max="40" />
-        <span class="term-unit">yrs</span>
-        <input type="number" class="num-input" id="monthsNum" value="7" min="0" max="11" />
-        <span class="term-unit">mths</span>
+    <div class="stats-row">
+      <div class="stat-box">
+        <span>Total Interest</span>
+        <strong id="totalInterestOut">$199,291</strong>
+      </div>
+      <div class="stat-box">
+        <span>Total Payments</span>
+        <strong id="totalPaymentsOut">$487,580</strong>
+      </div>
+      <div class="stat-box">
+        <span>Payoff Time</span>
+        <strong id="payoffTimeOut">17y 7m</strong>
       </div>
     </div>
-    <input type="range" id="yearsSlider" min="1" max="40" step="1" value="17" />
-    <div class="slider-readout" id="termReadout">17 yrs 7 mths</div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="dot" style="background: var(--blue);"></span> Principal Paid</div>
+      <div class="legend-item"><span class="dot" style="background: var(--yellow);"></span> Interest Paid</div>
+    </div>
+
+    <div class="chart-wrapper">
+      <div class="y-axis" id="yAxis"></div>
+      <div class="chart-area">
+        <div class="bars-container" id="barsContainer"></div>
+        <div class="x-axis" id="xAxis"></div>
+      </div>
+    </div>
+
+    <!-- Loan Amount -->
+    <div class="control-group">
+      <div class="control-header">
+        <label for="principalNum">Loan Amount</label>
+        <input type="number" class="num-input" id="principalNum" value="288289" min="0" step="1000" />
+      </div>
+      <input type="range" id="principalSlider" min="0" max="2000000" step="5000" value="288289" />
+      <div class="slider-readout" id="principalReadout">$288k</div>
+    </div>
+
+    <!-- Annual Interest Rate -->
+    <div class="control-group">
+      <div class="control-header">
+        <label for="rateNum">Annual Interest Rate (%)</label>
+        <input type="number" class="num-input" id="rateNum" value="6.59" min="0" max="25" step="0.01" />
+      </div>
+      <input type="range" id="rateSlider" min="0" max="15" step="0.05" value="6.59" />
+      <div class="slider-readout" id="rateReadout">6.59%</div>
+    </div>
+
+    <!-- Loan Term -->
+    <div class="control-group">
+      <div class="control-header">
+        <label>Remaining Loan Term</label>
+        <div class="term-inputs">
+          <input type="number" class="num-input" id="yearsNum" value="17" min="0" max="40" />
+          <span class="term-unit">yrs</span>
+          <input type="number" class="num-input" id="monthsNum" value="7" min="0" max="11" />
+          <span class="term-unit">mths</span>
+        </div>
+      </div>
+      <input type="range" id="yearsSlider" min="1" max="40" step="1" value="17" />
+      <div class="slider-readout" id="termReadout">17 yrs 7 mths</div>
+    </div>
+
+    <!-- Offset Account Balance -->
+    <div class="control-group">
+      <div class="control-header">
+        <label for="offsetNum">Offset Account Balance</label>
+        <input type="number" class="num-input" id="offsetNum" value="0" min="0" step="1000" />
+      </div>
+      <input type="range" id="offsetSlider" min="0" max="500000" step="1000" value="0" />
+      <div class="slider-readout" id="offsetReadout">$0</div>
+    </div>
+
+    <!-- Extra Monthly Payment -->
+    <div class="control-group">
+      <div class="control-header">
+        <label for="extraNum">Extra Monthly Payment</label>
+        <input type="number" class="num-input" id="extraNum" value="0" min="0" step="50" />
+      </div>
+      <input type="range" id="extraSlider" min="0" max="5000" step="50" value="0" />
+      <div class="slider-readout" id="extraReadout">$0/mo</div>
+    </div>
+
+    <!-- Australian Breakdown -->
+    <div class="au-breakdown">
+      <div class="au-item">
+        <span>Current Monthly Interest</span>
+        <strong id="curInterestOut">$1,583.19</strong>
+      </div>
+      <div class="au-item">
+        <span>Current Monthly Principal</span>
+        <strong id="curPrincipalOut">$727.62</strong>
+      </div>
+      <div class="au-item">
+        <span>Fortnightly (True)</span>
+        <strong id="fortnightlyOut">$1,065.69</strong>
+      </div>
+      <div class="au-item">
+        <span>Weekly (True)</span>
+        <strong id="weeklyOut">$532.67</strong>
+      </div>
+    </div>
   </div>
 
-  <!-- Extra Monthly Payment -->
-  <div class="control-group">
-    <div class="control-header">
-      <label for="extraNum">Extra Monthly Payment</label>
-      <input type="number" class="num-input" id="extraNum" value="0" min="0" step="50" />
+  <!-- TAB 2: PAID DOWN AFTER TIME -->
+  <div id="paidDownTab" class="tab-panel">
+    <div class="equity-hero">
+      <span class="label-muted">Principal Paid Down (Equity Built)</span>
+      <div class="hero-amount" id="paidDownOut">$54,327.08</div>
+      <div class="progress-track">
+        <div class="progress-fill" id="paidProgressFill"></div>
+      </div>
+      <div class="progress-meta">
+        <span id="paidPctOut">18.8% paid off</span>
+        <span id="remBalOut">Remaining: $233,961.92</span>
+      </div>
     </div>
-    <input type="range" id="extraSlider" min="0" max="5000" step="50" value="0" />
-    <div class="slider-readout" id="extraReadout">$0/mo</div>
-  </div>
 
-  <!-- Australian Breakdown -->
-  <div class="au-breakdown">
-    <div class="au-item">
-      <span>Current Monthly Interest</span>
-      <strong id="curInterestOut">$1,583.19</strong>
+    <div class="control-group">
+      <div class="control-header">
+        <label>Time Elapsed on Loan</label>
+        <div class="term-inputs">
+          <input type="number" class="num-input" id="elapsedYearsNum" value="5" min="0" max="40" />
+          <span class="term-unit">yrs</span>
+          <input type="number" class="num-input" id="elapsedMonthsNum" value="0" min="0" max="11" />
+          <span class="term-unit">mths</span>
+        </div>
+      </div>
+      <input type="range" id="elapsedYearsSlider" min="0" max="35" step="1" value="5" />
+      <div class="slider-readout" id="elapsedReadout">5 yrs</div>
     </div>
-    <div class="au-item">
-      <span>Current Monthly Principal</span>
-      <strong id="curPrincipalOut">$727.62</strong>
+
+    <div class="au-breakdown">
+      <div class="au-item">
+        <span>Remaining Loan Balance</span>
+        <strong id="remBalanceCard">$233,961.92</strong>
+      </div>
+      <div class="au-item">
+        <span>Interest Paid in Period</span>
+        <strong id="periodInterestOut">$84,321.52</strong>
+      </div>
+      <div class="au-item">
+        <span>Total Cash Paid in Period</span>
+        <strong id="periodTotalPaidOut">$138,648.60</strong>
+      </div>
+      <div class="au-item">
+        <span>Offset Interest Saved</span>
+        <strong id="offsetSavedPeriodOut">$0.00</strong>
+      </div>
     </div>
-    <div class="au-item">
-      <span>Fortnightly (True)</span>
-      <strong id="fortnightlyOut">$1,065.69</strong>
-    </div>
-    <div class="au-item">
-      <span>Weekly (True)</span>
-      <strong id="weeklyOut">$532.67</strong>
-    </div>
+
+    <p class="label-muted" style="margin-top: 16px; line-height: 1.45;">
+      Uses your Loan Amount, Interest Rate, Remaining Term, Offset Balance, and Extra Monthly Payment from the first tab to simulate your exact balance after the chosen elapsed timeframe.
+    </p>
   </div>
 </div>
 
@@ -415,36 +588,15 @@
     const max = parseFloat(slider.max) || 100;
     const val = parseFloat(slider.value) || 0;
     const pct = Math.min(100, Math.max(0, ((val - min) / (max - min)) * 100));
-    slider.style.background = `linear-gradient(to right, #4c8bf5 ${pct}%, #3c4043 ${pct}%)`;
+    const fill = document.documentElement.getAttribute('data-theme') === 'light' ? '#0f4c81' : '#4c8bf5';
+    const track = document.documentElement.getAttribute('data-theme') === 'light' ? '#d1d5db' : '#3c4043';
+    slider.style.background = `linear-gradient(to right, ${fill} ${pct}%, ${track} ${pct}%)`;
   }
 
-  function calculate() {
-    const P = parseFloat(document.getElementById('principalNum').value) || 0;
-    const annualRate = (parseFloat(document.getElementById('rateNum').value) || 0) / 100;
-    const yrs = parseInt(document.getElementById('yearsNum').value) || 0;
-    const mths = parseInt(document.getElementById('monthsNum').value) || 0;
-    const extra = parseFloat(document.getElementById('extraNum').value) || 0;
-
-    const totalMonths = (yrs * 12) + mths;
-    const totalYearsExact = yrs + (mths / 12);
+  function simulateLoan(P, annualRate, totalMonths, offset, extra, stopAfterMonths = null) {
     const monthlyRate = annualRate / 12;
-
     const baseMonthly = pmt(monthlyRate, totalMonths, P);
-    const totalMonthly = P > 0 && totalMonths > 0 ? baseMonthly + extra : 0;
-
-    document.getElementById('principalReadout').textContent = formatShortK(P);
-    document.getElementById('rateReadout').textContent = (annualRate * 100).toFixed(2).replace(/\.00$/, '.0') + '%';
-    document.getElementById('termReadout').textContent = mths > 0 ? `${yrs} yrs ${mths} mths` : `${yrs} yrs`;
-    document.getElementById('extraReadout').textContent = `${audWhole.format(extra)}/mo`;
-
-    const firstMonthInterest = P * monthlyRate;
-    const firstMonthPrincipal = Math.min(P, Math.max(0, totalMonthly - firstMonthInterest));
-
-    document.getElementById('monthlyOut').textContent = audExact.format(totalMonthly);
-    document.getElementById('curInterestOut').textContent = audExact.format(firstMonthInterest);
-    document.getElementById('curPrincipalOut').textContent = audExact.format(firstMonthPrincipal);
-    document.getElementById('fortnightlyOut').textContent = audExact.format(pmt(annualRate / 26, totalYearsExact * 26, P));
-    document.getElementById('weeklyOut').textContent = audExact.format(pmt(annualRate / 52, totalYearsExact * 52, P));
+    const totalMonthly = (P > 0 && totalMonths > 0) ? baseMonthly + extra : 0;
 
     let balance = P;
     let totalInterest = 0;
@@ -454,14 +606,18 @@
     let yrPrincipal = 0;
     let yrInterest = 0;
 
+    const maxSteps = stopAfterMonths !== null ? stopAfterMonths : 600;
+
     if (P > 0 && totalMonthly > 0) {
-      while (balance > 0.01 && monthsElapsed < 600) {
+      while (balance > 0.01 && monthsElapsed < maxSteps) {
         monthsElapsed++;
-        const interest = balance * monthlyRate;
+        const interestBearing = Math.max(0, balance - offset);
+        const interest = interestBearing * monthlyRate;
         let principalPaid = totalMonthly - interest;
+
         if (principalPaid <= 0 && monthlyRate > 0) {
           principalPaid = 0;
-          balance = 0;
+          if (stopAfterMonths === null) balance = 0;
         } else if (principalPaid >= balance) {
           principalPaid = balance;
           balance = 0;
@@ -474,20 +630,68 @@
         yrPrincipal += principalPaid;
         yrInterest += interest;
 
-        if (monthsElapsed % 12 === 0 || balance === 0) {
-          yearlyData.push({ year: Math.ceil(monthsElapsed / 12), principal: yrPrincipal, interest: yrInterest });
+        if (monthsElapsed % 12 === 0 || balance === 0 || (stopAfterMonths !== null && monthsElapsed === stopAfterMonths)) {
+          yearlyData.push({
+            year: Math.ceil(monthsElapsed / 12),
+            principal: yrPrincipal,
+            interest: yrInterest
+          });
           yrPrincipal = 0;
           yrInterest = 0;
         }
       }
     }
 
-    document.getElementById('totalInterestOut').textContent = audWhole.format(totalInterest);
-    document.getElementById('totalPaymentsOut').textContent = audWhole.format(totalPaid);
+    return {
+      baseMonthly,
+      totalMonthly,
+      balance,
+      principalPaidDown: Math.max(0, P - balance),
+      totalInterest,
+      totalPaid,
+      monthsElapsed,
+      yearlyData
+    };
+  }
 
-    const payYrs = Math.floor(monthsElapsed / 12);
-    const payMths = monthsElapsed % 12;
-    if (monthsElapsed === 0) {
+  function calculateAll() {
+    const P = parseFloat(document.getElementById('principalNum').value) || 0;
+    const annualRate = (parseFloat(document.getElementById('rateNum').value) || 0) / 100;
+    const yrs = parseInt(document.getElementById('yearsNum').value) || 0;
+    const mths = parseInt(document.getElementById('monthsNum').value) || 0;
+    const offset = parseFloat(document.getElementById('offsetNum').value) || 0;
+    const extra = parseFloat(document.getElementById('extraNum').value) || 0;
+
+    const totalMonths = (yrs * 12) + mths;
+    const totalYearsExact = yrs + (mths / 12);
+    const monthlyRate = annualRate / 12;
+
+    // Readouts
+    document.getElementById('principalReadout').textContent = formatShortK(P);
+    document.getElementById('rateReadout').textContent = (annualRate * 100).toFixed(2).replace(/\.00$/, '.0') + '%';
+    document.getElementById('termReadout').textContent = mths > 0 ? `${yrs} yrs ${mths} mths` : `${yrs} yrs`;
+    document.getElementById('offsetReadout').textContent = audWhole.format(offset);
+    document.getElementById('extraReadout').textContent = `${audWhole.format(extra)}/mo`;
+
+    const fullSim = simulateLoan(P, annualRate, totalMonths, offset, extra, null);
+
+    // Month 1 breakdown with offset
+    const effectiveBalanceM1 = Math.max(0, P - offset);
+    const firstMonthInterest = effectiveBalanceM1 * monthlyRate;
+    const firstMonthPrincipal = Math.min(P, Math.max(0, fullSim.totalMonthly - firstMonthInterest));
+
+    document.getElementById('monthlyOut').textContent = audExact.format(fullSim.totalMonthly);
+    document.getElementById('curInterestOut').textContent = audExact.format(firstMonthInterest);
+    document.getElementById('curPrincipalOut').textContent = audExact.format(firstMonthPrincipal);
+    document.getElementById('fortnightlyOut').textContent = audExact.format(pmt(annualRate / 26, totalYearsExact * 26, P));
+    document.getElementById('weeklyOut').textContent = audExact.format(pmt(annualRate / 52, totalYearsExact * 52, P));
+
+    document.getElementById('totalInterestOut').textContent = audWhole.format(fullSim.totalInterest);
+    document.getElementById('totalPaymentsOut').textContent = audWhole.format(fullSim.totalPaid);
+
+    const payYrs = Math.floor(fullSim.monthsElapsed / 12);
+    const payMths = fullSim.monthsElapsed % 12;
+    if (fullSim.monthsElapsed === 0) {
       document.getElementById('payoffTimeOut').textContent = '0 years';
     } else if (payMths === 0) {
       document.getElementById('payoffTimeOut').textContent = `${payYrs} ${payYrs === 1 ? 'year' : 'years'}`;
@@ -495,7 +699,28 @@
       document.getElementById('payoffTimeOut').textContent = `${payYrs}y ${payMths}m`;
     }
 
-    renderChart(yearlyData);
+    renderChart(fullSim.yearlyData);
+
+    // Tab 2: Paid Down After Time
+    const elYrs = parseInt(document.getElementById('elapsedYearsNum').value) || 0;
+    const elMths = parseInt(document.getElementById('elapsedMonthsNum').value) || 0;
+    const elapsedTotalMonths = (elYrs * 12) + elMths;
+    document.getElementById('elapsedReadout').textContent = elMths > 0 ? `${elYrs} yrs ${elMths} mths` : `${elYrs} yrs`;
+
+    const periodWithOffset = simulateLoan(P, annualRate, totalMonths, offset, extra, elapsedTotalMonths);
+    const periodNoOffset = simulateLoan(P, annualRate, totalMonths, 0, extra, elapsedTotalMonths);
+    const interestSavedByOffset = Math.max(0, periodNoOffset.totalInterest - periodWithOffset.totalInterest);
+
+    const pctPaid = P > 0 ? Math.min(100, (periodWithOffset.principalPaidDown / P) * 100) : 0;
+
+    document.getElementById('paidDownOut').textContent = audExact.format(periodWithOffset.principalPaidDown);
+    document.getElementById('paidProgressFill').style.width = `${pctPaid}%`;
+    document.getElementById('paidPctOut').textContent = `${pctPaid.toFixed(1)}% paid off`;
+    document.getElementById('remBalOut').textContent = `Remaining: ${audExact.format(periodWithOffset.balance)}`;
+    document.getElementById('remBalanceCard').textContent = audExact.format(periodWithOffset.balance);
+    document.getElementById('periodInterestOut').textContent = audExact.format(periodWithOffset.totalInterest);
+    document.getElementById('periodTotalPaidOut').textContent = audExact.format(periodWithOffset.totalPaid);
+    document.getElementById('offsetSavedPeriodOut').textContent = audExact.format(interestSavedByOffset);
   }
 
   function renderChart(data) {
@@ -540,7 +765,7 @@
       barsContainer.appendChild(col);
     });
 
-    const step = Math.max(1, Math.ceil(data.length / 10));
+    const step = Math.max(1, Math.ceil(data.length / 9));
     for (let i = 0; i < data.length; i += step) {
       const lbl = document.createElement('span');
       lbl.textContent = `Yr ${data[i].year}`;
@@ -554,12 +779,12 @@
     num.addEventListener('input', () => {
       slider.value = num.value || 0;
       updateSliderFill(slider);
-      calculate();
+      calculateAll();
     });
     slider.addEventListener('input', () => {
       num.value = slider.value;
       updateSliderFill(slider);
-      calculate();
+      calculateAll();
     });
     updateSliderFill(slider);
   }
@@ -567,29 +792,60 @@
   bindPair('principalNum', 'principalSlider');
   bindPair('rateNum', 'rateSlider');
   bindPair('yearsNum', 'yearsSlider');
+  bindPair('offsetNum', 'offsetSlider');
   bindPair('extraNum', 'extraSlider');
+  bindPair('elapsedYearsNum', 'elapsedYearsSlider');
 
-  document.getElementById('monthsNum').addEventListener('input', calculate);
+  document.getElementById('monthsNum').addEventListener('input', calculateAll);
+  document.getElementById('elapsedMonthsNum').addEventListener('input', calculateAll);
 
+  // Tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Theme Toggle
+  const themeBtn = document.getElementById('themeBtn');
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    themeBtn.textContent = theme === 'light' ? '🌙 Dark' : '☀️ Light';
+    document.getElementById('themeMeta').setAttribute('content', theme === 'light' ? '#ffffff' : '#1e1f22');
+    localStorage.setItem('mortgage_pro_theme', theme);
+    document.querySelectorAll('input[type="range"]').forEach(updateSliderFill);
+  }
+
+  const savedTheme = localStorage.getItem('mortgage_pro_theme') || 'dark';
+  applyTheme(savedTheme);
+
+  themeBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'light' ? 'dark' : 'light');
+  });
+
+  // Reset
   document.getElementById('resetBtn').addEventListener('click', () => {
-    document.getElementById('principalNum').value = '';
+    ['principalNum', 'rateNum', 'yearsNum', 'monthsNum', 'offsetNum', 'extraNum'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
     document.getElementById('principalSlider').value = 0;
-    document.getElementById('rateNum').value = '';
     document.getElementById('rateSlider').value = 0;
-    document.getElementById('yearsNum').value = '';
     document.getElementById('yearsSlider').value = 1;
-    document.getElementById('monthsNum').value = '';
-    document.getElementById('extraNum').value = '';
+    document.getElementById('offsetSlider').value = 0;
     document.getElementById('extraSlider').value = 0;
     document.querySelectorAll('input[type="range"]').forEach(updateSliderFill);
-    calculate();
+    calculateAll();
   });
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
 
-  calculate();
+  calculateAll();
 </script>
 
 </body>
