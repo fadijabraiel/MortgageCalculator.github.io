@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Australian Mortgage Repayment Calculator</title>
+  <style>
+    :root {
+      --primary: #0f4c81;
+      --primary-hover: #0a355c;
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d1d5db;
+      --accent-bg: #eff6ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background: var(--card);
+      max-width: 540px;
+      width: 100%;
+      padding: 28px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 6px;
+      color: var(--primary);
+    }
+
+    p.subtitle {
+      margin: 0 0 22px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .term-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .results {
+      margin-top: 24px;
+      background: var(--accent-bg);
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .result-main {
+      text-align: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #bfdbfe;
+      margin-bottom: 14px;
+    }
+
+    .result-main span.label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .result-main strong {
+      font-size: 2rem;
+      color: var(--primary);
+      display: block;
+      margin: 4px 0;
+    }
+
+    .breakdown-pill {
+      display: inline-block;
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.82rem;
+      color: var(--text);
+      margin-top: 4px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+
+    .result-item {
+      background: #ffffff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .result-item span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .result-item strong {
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .summary {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #bfdbfe;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Mortgage Repayment Calculator</h1>
+  <p class="subtitle">Supports exact years &amp; months and Australian repayment frequencies.</p>
+
+  <div class="form-group">
+    <label for="principal">Loan Balance ($ AUD)</label>
+    <input type="number" id="principal" value="288289" min="0" step="100" />
+  </div>
+
+  <div class="form-group">
+    <label for="rate">Annual Interest Rate (%)</label>
+    <input type="number" id="rate" value="6.59" min="0" max="100" step="0.01" />
+  </div>
+
+  <div class="form-group">
+    <label>Remaining Loan Term</label>
+    <div class="term-row">
+      <div>
+        <input type="number" id="years" value="17" min="0" max="40" placeholder="Years" />
+        <small style="color: var(--muted);">Years</small>
+      </div>
+      <div>
+        <input type="number" id="months" value="7" min="0" max="11" placeholder="Months" />
+        <small style="color: var(--muted);">Months</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="results">
+    <div class="result-main">
+      <span class="label">Monthly Repayment</span>
+      <strong id="monthlyOut">$0.00</strong>
+      <div class="breakdown-pill">
+        Current Month: <span id="currentInterestOut" style="font-weight: 600;">$0.00</span> interest &bull; <span id="currentPrincipalOut" style="font-weight: 600;">$0.00</span> principal
+      </div>
+    </div>
+
+    <div class="result-grid">
+      <div class="result-item">
+        <span>Current Monthly Interest</span>
+        <strong id="monthlyInterestCardOut">$0.00</strong>
+      </div>
+      <div class="result-item">
+        <span>Current Monthly Principal</span>
+        <strong id="monthlyPrincipalCardOut">$0.00</strong>
+      </div>
+      <div class="result-item">
+        <span>Fortnightly (True)</span>
+        <strong id="fortnightlyTrueOut">$0.00</strong>
+      </div>
+      <div class="result-item">
+        <span>Fortnightly (Half-Monthly)</span>
+        <strong id="fortnightlyHalfOut">$0.00</strong>
+      </div>
+      <div class="result-item">
+        <span>Weekly (True)</span>
+        <strong id="weeklyTrueOut">$0.00</strong>
+      </div>
+      <div class="result-item">
+        <span>Weekly (Quarter-Monthly)</span>
+        <strong id="weeklyQuarterOut">$0.00</strong>
+      </div>
+    </div>
+
+    <div class="summary">
+      <span>Total Interest: <strong id="totalInterestOut">$0.00</strong></span>
+      <span>Total Cost: <strong id="totalCostOut">$0.00</strong></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const formatter = new Intl.NumberFormat('en-AU', {
+    style: 'currency',
+    currency: 'AUD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+  function pmt(periodicRate, totalPeriods, presentValue) {
+    if (totalPeriods <= 0 || presentValue <= 0) return 0;
+    if (periodicRate === 0) return presentValue / totalPeriods;
+    const factor = Math.pow(1 + periodicRate, totalPeriods);
+    return (presentValue * periodicRate * factor) / (factor - 1);
+  }
+
+  function calculate() {
+    const principal = parseFloat(document.getElementById('principal').value) || 0;
+    const annualRate = (parseFloat(document.getElementById('rate').value) || 0) / 100;
+    const years = parseFloat(document.getElementById('years').value) || 0;
+    const months = parseFloat(document.getElementById('months').value) || 0;
+
+    const totalYears = years + (months / 12);
+    const totalMonths = (years * 12) + months;
+    const monthlyRate = annualRate / 12;
+
+    // Monthly
+    const monthly = pmt(monthlyRate, totalMonths, principal);
+    const currentMonthlyInterest = principal * monthlyRate;
+    const currentMonthlyPrincipal = Math.max(0, monthly - currentMonthlyInterest);
+
+    // Fortnightly
+    const fortnightlyTrue = pmt(annualRate / 26, totalYears * 26, principal);
+    const fortnightlyHalf = monthly / 2;
+
+    // Weekly
+    const weeklyTrue = pmt(annualRate / 52, totalYears * 52, principal);
+    const weeklyQuarter = monthly / 4;
+
+    // Totals (based on standard monthly schedule)
+    const totalCost = monthly * totalMonths;
+    const totalInterest = Math.max(0, totalCost - principal);
+
+    document.getElementById('monthlyOut').textContent = formatter.format(monthly);
+    document.getElementById('currentInterestOut').textContent = formatter.format(currentMonthlyInterest);
+    document.getElementById('currentPrincipalOut').textContent = formatter.format(currentMonthlyPrincipal);
+    document.getElementById('monthlyInterestCardOut').textContent = formatter.format(currentMonthlyInterest);
+    document.getElementById('monthlyPrincipalCardOut').textContent = formatter.format(currentMonthlyPrincipal);
+
+    document.getElementById('fortnightlyTrueOut').textContent = formatter.format(fortnightlyTrue);
+    document.getElementById('fortnightlyHalfOut').textContent = formatter.format(fortnightlyHalf);
+    document.getElementById('weeklyTrueOut').textContent = formatter.format(weeklyTrue);
+    document.getElementById('weeklyQuarterOut').textContent = formatter.format(weeklyQuarter);
+    document.getElementById('totalInterestOut').textContent = formatter.format(totalInterest);
+    document.getElementById('totalCostOut').textContent = formatter.format(totalCost);
+  }
+
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', calculate);
+  });
+
+  calculate();
+</script>
+
+</body>
+</html>
