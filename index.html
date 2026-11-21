@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mortgage Pro Calculator</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" id="metaThemeColor" content="#1e1f22" />
+  <meta name="theme-color" content="#1e1f22" id="themeMeta" />
   <link rel="icon" type="image/png" href="icon.png" />
   <style>
     :root {
@@ -19,8 +19,7 @@
       --yellow: #fbbc04;
       --green: #34a853;
       --track: #3c4043;
-      --tab-bg: #16171a;
-      --tab-active: #2b2c30;
+      --tab-active-bg: #33363d;
     }
 
     [data-theme="light"] {
@@ -30,12 +29,11 @@
       --border: #dadce0;
       --text: #1f2937;
       --muted: #5f6368;
-      --blue: #1a73e8;
-      --yellow: #f9ab00;
-      --green: #1e8e3e;
-      --track: #dadce0;
-      --tab-bg: #e8eaed;
-      --tab-active: #ffffff;
+      --blue: #0f4c81;
+      --yellow: #f59e0b;
+      --green: #16a34a;
+      --track: #d1d5db;
+      --tab-active-bg: #ffffff;
     }
 
     * {
@@ -60,122 +58,138 @@
       padding: 20px;
       border-radius: 16px;
       border: 1px solid var(--border);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      transition: background-color 0.2s, border-color 0.2s;
     }
 
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
       margin-bottom: 14px;
     }
 
-    .tabs {
+    .app-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .top-actions {
       display: flex;
-      background: var(--tab-bg);
-      padding: 3px;
+      gap: 8px;
+    }
+
+    .pill-btn {
+      background: var(--input-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .pill-btn:hover {
+      opacity: 0.85;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--input-bg);
+      padding: 4px;
       border-radius: 10px;
-      flex: 1;
+      margin-bottom: 18px;
       border: 1px solid var(--border);
     }
 
     .tab-btn {
-      flex: 1;
       background: transparent;
       border: none;
       color: var(--muted);
-      padding: 7px 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      padding: 8px 10px;
       border-radius: 7px;
+      font-size: 0.84rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.15s;
     }
 
     .tab-btn.active {
-      background: var(--tab-active);
+      background: var(--tab-active-bg);
       color: var(--text);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
-    }
-
-    .theme-btn {
-      background: var(--input-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 7px 11px;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
     .label-muted {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: var(--muted);
-    }
-
-    .reset-btn {
-      background: var(--input-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      cursor: pointer;
-    }
-
-    .reset-btn:hover {
-      opacity: 0.85;
     }
 
     .hero-amount {
       font-size: 2.1rem;
       font-weight: 700;
-      margin: 2px 0 14px;
+      margin: 2px 0 16px;
       letter-spacing: -0.5px;
-    }
-
-    .hero-sub {
-      font-size: 0.82rem;
-      color: var(--green);
-      font-weight: 600;
-      margin: -10px 0 14px;
     }
 
     .stats-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      padding-bottom: 16px;
+      padding-bottom: 18px;
       border-bottom: 1px solid var(--border);
     }
 
     .stat-box span {
       display: block;
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       color: var(--muted);
       margin-bottom: 3px;
     }
 
     .stat-box strong {
-      font-size: 0.98rem;
+      font-size: 1rem;
       font-weight: 600;
+    }
+
+    .progress-wrap {
+      margin: 16px 0 6px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    .progress-header strong {
+      color: var(--green);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--track);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      width: 0%;
+      transition: width 0.25s ease;
     }
 
     .legend {
       display: flex;
       gap: 18px;
-      margin: 14px 0 10px;
-      font-size: 0.8rem;
+      margin: 16px 0 12px;
+      font-size: 0.82rem;
       color: var(--text);
     }
 
@@ -195,8 +209,8 @@
     .chart-wrapper {
       display: flex;
       gap: 8px;
-      height: 175px;
-      margin-bottom: 18px;
+      height: 180px;
+      margin-bottom: 20px;
       padding-top: 6px;
     }
 
@@ -256,33 +270,16 @@
       padding-top: 5px;
     }
 
-    .progress-wrap {
-      margin: 16px 0 18px;
+    .elapsed-highlight {
       background: var(--input-bg);
+      border: 1px solid var(--blue);
+      border-radius: 12px;
       padding: 12px 14px;
-      border-radius: 10px;
+      margin: 16px 0 18px;
     }
 
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
+    .elapsed-highlight .control-header {
       margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .progress-bar-bg {
-      height: 10px;
-      background: var(--track);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--green));
-      width: 0%;
-      transition: width 0.25s ease;
     }
 
     .control-group {
@@ -306,11 +303,15 @@
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 0.92rem;
+      padding: 7px 10px;
+      font-size: 0.95rem;
       font-weight: 600;
       text-align: right;
       width: 120px;
+    }
+
+    .elapsed-highlight .num-input {
+      background: var(--card);
     }
 
     .num-input:focus {
@@ -325,12 +326,12 @@
     }
 
     .term-inputs .num-input {
-      width: 60px;
+      width: 62px;
       text-align: center;
     }
 
     .term-unit {
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       color: var(--muted);
     }
 
@@ -341,7 +342,7 @@
       background: var(--track);
       border-radius: 4px;
       outline: none;
-      margin: 6px 0 3px;
+      margin: 6px 0 4px;
     }
 
     input[type="range"]::-webkit-slider-thumb {
@@ -361,8 +362,8 @@
     }
 
     .au-breakdown {
-      margin-top: 16px;
-      padding-top: 14px;
+      margin-top: 18px;
+      padding-top: 16px;
       border-top: 1px solid var(--border);
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -377,13 +378,13 @@
 
     .au-item span {
       display: block;
-      font-size: 0.73rem;
+      font-size: 0.74rem;
       color: var(--muted);
       margin-bottom: 2px;
     }
 
     .au-item strong {
-      font-size: 0.95rem;
+      font-size: 0.96rem;
     }
 
     .hidden {
@@ -394,21 +395,22 @@
 <body>
 
 <div class="container">
-  <!-- Top Tabs & Theme Switch -->
   <div class="top-bar">
-    <div class="tabs">
-      <button class="tab-btn active" id="tabRepayBtn" type="button">Repayments</button>
-      <button class="tab-btn" id="tabEquityBtn" type="button">Paid Down After Time</button>
+    <span class="app-title">Mortgage Pro</span>
+    <div class="top-actions">
+      <button class="pill-btn" id="themeBtn" type="button">☀️ Light</button>
+      <button class="pill-btn" id="resetBtn" type="button">Reset</button>
     </div>
-    <button class="theme-btn" id="themeBtn" type="button">☀️ Light</button>
   </div>
 
-  <!-- TAB 1: REPAYMENTS & CHART -->
-  <div id="repaySection">
-    <div class="header-row">
-      <span class="label-muted">Estimated Monthly Payment</span>
-      <button class="reset-btn" id="resetBtn1" type="button">Reset</button>
-    </div>
+  <div class="tabs">
+    <button class="tab-btn active" id="tabRepayments" type="button">Repayments &amp; Chart</button>
+    <button class="tab-btn" id="tabPaidDown" type="button">Paid Down After Time</button>
+  </div>
+
+  <!-- VIEW 1: REPAYMENTS & CHART -->
+  <div id="viewRepayments">
+    <div class="label-muted">Estimated Monthly Payment</div>
     <div class="hero-amount" id="monthlyOut">$2,310.81</div>
 
     <div class="stats-row">
@@ -432,7 +434,13 @@
     </div>
 
     <div class="chart-wrapper">
-      <div class="y-axis" id="yAxis"></div>
+      <div class="y-axis" id="yAxis">
+        <span>$28k</span>
+        <span>$21k</span>
+        <span>$14k</span>
+        <span>$7k</span>
+        <span>$0</span>
+      </div>
       <div class="chart-area">
         <div class="bars-container" id="barsContainer"></div>
         <div class="x-axis" id="xAxis"></div>
@@ -440,57 +448,53 @@
     </div>
   </div>
 
-  <!-- TAB 2: PAID DOWN AFTER TIME (EQUITY / BALANCE) -->
-  <div id="equitySection" class="hidden">
-    <div class="header-row">
-      <span class="label-muted">Principal Paid Down (Equity Built)</span>
-      <button class="reset-btn" id="resetBtn2" type="button">Reset</button>
-    </div>
-    <div class="hero-amount" id="paidDownOut">$0.00</div>
-    <div class="hero-sub" id="remainingSubOut">Remaining Balance: $288,289.00</div>
+  <!-- VIEW 2: PAID DOWN AFTER TIME -->
+  <div id="viewPaidDown" class="hidden">
+    <div class="label-muted">Principal Paid Down (Equity Built)</div>
+    <div class="hero-amount" id="paidDownHero">$0.00</div>
 
     <div class="stats-row">
+      <div class="stat-box">
+        <span>Remaining Balance</span>
+        <strong id="remBalanceOut">$0</strong>
+      </div>
       <div class="stat-box">
         <span>Interest Paid</span>
         <strong id="periodInterestOut">$0</strong>
       </div>
       <div class="stat-box">
         <span>Offset Saved</span>
-        <strong id="periodOffsetSavedOut">$0</strong>
-      </div>
-      <div class="stat-box">
-        <span>% Paid Off</span>
-        <strong id="pctPaidOut">0.0%</strong>
+        <strong id="offsetSavedOut">$0</strong>
       </div>
     </div>
 
     <div class="progress-wrap">
       <div class="progress-header">
-        <span>Loan Paydown Progress</span>
-        <span id="progressLabel">0.0%</span>
+        <span id="elapsedLabelSummary">Progress after 5 yrs 0 mths</span>
+        <strong id="pctPaidOut">0.0% paid</strong>
       </div>
-      <div class="progress-bar-bg">
-        <div class="progress-bar-fill" id="progressBarFill"></div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
       </div>
     </div>
 
-    <!-- Elapsed Time Controls (Only shown on Paid Down After Time tab) -->
-    <div class="control-group">
+    <!-- Time Elapsed Input -->
+    <div class="elapsed-highlight">
       <div class="control-header">
-        <label>Time Elapsed (After)</label>
+        <label>Time Elapsed</label>
         <div class="term-inputs">
-          <input type="number" class="num-input" id="elYearsNum" value="5" min="0" max="40" />
+          <input type="number" class="num-input" id="elapsedYrsNum" value="5" min="0" max="40" />
           <span class="term-unit">yrs</span>
-          <input type="number" class="num-input" id="elMonthsNum" value="0" min="0" max="11" />
+          <input type="number" class="num-input" id="elapsedMthsNum" value="0" min="0" max="11" />
           <span class="term-unit">mths</span>
         </div>
       </div>
-      <input type="range" id="elYearsSlider" min="0" max="35" step="1" value="5" />
-      <div class="slider-readout" id="elTermReadout">5 yrs</div>
+      <input type="range" id="elapsedYrsSlider" min="0" max="35" step="1" value="5" />
+      <div class="slider-readout" id="elapsedReadout">5 yrs</div>
     </div>
   </div>
 
-  <!-- SHARED INPUT PARAMETERS (Used by both tabs) -->
+  <!-- SHARED INPUT SLIDERS -->
   <div class="control-group">
     <div class="control-header">
       <label for="principalNum">Loan Amount</label>
@@ -541,8 +545,8 @@
     <div class="slider-readout" id="extraReadout">$0/mo</div>
   </div>
 
-  <!-- Australian Breakdown -->
-  <div class="au-breakdown">
+  <!-- BOTTOM BREAKDOWN: REPAYMENTS TAB -->
+  <div class="au-breakdown" id="bottomRepayments">
     <div class="au-item">
       <span>Current Monthly Interest</span>
       <strong id="curInterestOut">$1,583.19</strong>
@@ -558,6 +562,26 @@
     <div class="au-item">
       <span>Weekly (True)</span>
       <strong id="weeklyOut">$532.67</strong>
+    </div>
+  </div>
+
+  <!-- BOTTOM BREAKDOWN: PAID DOWN AFTER TIME TAB -->
+  <div class="au-breakdown hidden" id="bottomPaidDown">
+    <div class="au-item">
+      <span>Total Paid in Period</span>
+      <strong id="periodTotalPaidOut">$0.00</strong>
+    </div>
+    <div class="au-item">
+      <span>Time Saved (Offset + Extra)</span>
+      <strong id="timeSavedOut">0 mths</strong>
+    </div>
+    <div class="au-item">
+      <span>Interest at End of Period</span>
+      <strong id="endMonthInterestOut">$0.00/mo</strong>
+    </div>
+    <div class="au-item">
+      <span>Principal at End of Period</span>
+      <strong id="endMonthPrincipalOut">$0.00/mo</strong>
     </div>
   </div>
 </div>
@@ -586,9 +610,40 @@
     const val = parseFloat(slider.value) || 0;
     const pct = Math.min(100, Math.max(0, ((val - min) / (max - min)) * 100));
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    const activeColor = isLight ? '#1a73e8' : '#4c8bf5';
-    const trackColor = isLight ? '#dadce0' : '#3c4043';
+    const activeColor = isLight ? '#0f4c81' : '#4c8bf5';
+    const trackColor = isLight ? '#d1d5db' : '#3c4043';
     slider.style.background = `linear-gradient(to right, ${activeColor} ${pct}%, ${trackColor} ${pct}%)`;
+  }
+
+  function simulateLoan(P, monthlyRate, baseMonthly, extra, offset, maxMonths) {
+    let balance = P;
+    let totalInterest = 0;
+    let totalPaid = 0;
+    let monthsElapsed = 0;
+    const totalPayment = P > 0 && baseMonthly > 0 ? baseMonthly + extra : 0;
+
+    if (P > 0 && totalPayment > 0) {
+      while (balance > 0.01 && monthsElapsed < maxMonths) {
+        monthsElapsed++;
+        const interestBearing = Math.max(0, balance - offset);
+        const interest = interestBearing * monthlyRate;
+        let principalPaid = totalPayment - interest;
+
+        if (principalPaid <= 0 && monthlyRate > 0) {
+          principalPaid = 0;
+          balance = 0;
+        } else if (principalPaid >= balance) {
+          principalPaid = balance;
+          balance = 0;
+        } else {
+          balance -= principalPaid;
+        }
+
+        totalInterest += interest;
+        totalPaid += (principalPaid + interest);
+      }
+    }
+    return { balance, totalInterest, totalPaid, monthsElapsed };
   }
 
   function calculate() {
@@ -599,9 +654,9 @@
     const offset = parseFloat(document.getElementById('offsetNum').value) || 0;
     const extra = parseFloat(document.getElementById('extraNum').value) || 0;
 
-    const elYrs = parseInt(document.getElementById('elYearsNum').value) || 0;
-    const elMths = parseInt(document.getElementById('elMonthsNum').value) || 0;
-    const elapsedTargetMonths = (elYrs * 12) + elMths;
+    const eYrs = parseInt(document.getElementById('elapsedYrsNum').value) || 0;
+    const eMths = parseInt(document.getElementById('elapsedMthsNum').value) || 0;
+    const elapsedTotalMonths = (eYrs * 12) + eMths;
 
     const totalMonths = (yrs * 12) + mths;
     const totalYearsExact = yrs + (mths / 12);
@@ -616,11 +671,10 @@
     document.getElementById('termReadout').textContent = mths > 0 ? `${yrs} yrs ${mths} mths` : `${yrs} yrs`;
     document.getElementById('offsetReadout').textContent = formatShortK(offset);
     document.getElementById('extraReadout').textContent = `${audWhole.format(extra)}/mo`;
-    document.getElementById('elTermReadout').textContent = elMths > 0 ? `${elYrs} yrs ${elMths} mths` : `${elYrs} yrs`;
+    document.getElementById('elapsedReadout').textContent = eMths > 0 ? `${eYrs} yrs ${eMths} mths` : `${eYrs} yrs`;
 
-    // Current Month 1 split (factoring in offset)
-    const effectiveBalanceM1 = Math.max(0, P - offset);
-    const firstMonthInterest = effectiveBalanceM1 * monthlyRate;
+    // Month 1 breakdown (with offset)
+    const firstMonthInterest = Math.max(0, P - offset) * monthlyRate;
     const firstMonthPrincipal = Math.min(P, Math.max(0, totalMonthly - firstMonthInterest));
 
     document.getElementById('monthlyOut').textContent = audExact.format(totalMonthly);
@@ -629,17 +683,11 @@
     document.getElementById('fortnightlyOut').textContent = audExact.format(pmt(annualRate / 26, totalYearsExact * 26, P));
     document.getElementById('weeklyOut').textContent = audExact.format(pmt(annualRate / 52, totalYearsExact * 52, P));
 
-    // Full loan simulation + Elapsed period snapshot
+    // Full loan simulation for Repayments chart & totals
     let balance = P;
-    let balanceNoOffset = P;
     let totalInterest = 0;
     let totalPaid = 0;
     let monthsElapsed = 0;
-
-    let periodInterest = 0;
-    let periodInterestNoOffset = 0;
-    let periodEndBalance = P;
-
     const yearlyData = [];
     let yrPrincipal = 0;
     let yrInterest = 0;
@@ -661,21 +709,6 @@
           balance -= principalPaid;
         }
 
-        // Track no-offset comparison for offset savings
-        if (balanceNoOffset > 0.01) {
-          const intNoOff = balanceNoOffset * monthlyRate;
-          const prinNoOff = Math.min(balanceNoOffset, Math.max(0, totalMonthly - intNoOff));
-          balanceNoOffset -= prinNoOff;
-          if (monthsElapsed <= elapsedTargetMonths) {
-            periodInterestNoOffset += intNoOff;
-          }
-        }
-
-        if (monthsElapsed <= elapsedTargetMonths) {
-          periodInterest += interest;
-          periodEndBalance = balance;
-        }
-
         totalInterest += interest;
         totalPaid += (principalPaid + interest);
         yrPrincipal += principalPaid;
@@ -689,11 +722,6 @@
       }
     }
 
-    if (elapsedTargetMonths >= monthsElapsed && monthsElapsed > 0) {
-      periodEndBalance = 0;
-    }
-
-    // Tab 1 Outputs
     document.getElementById('totalInterestOut').textContent = audWhole.format(totalInterest);
     document.getElementById('totalPaymentsOut').textContent = audWhole.format(totalPaid);
 
@@ -707,20 +735,45 @@
       document.getElementById('payoffTimeOut').textContent = `${payYrs}y ${payMths}m`;
     }
 
-    // Tab 2 Outputs (Paid Down After Time)
-    const paidDown = Math.max(0, P - periodEndBalance);
-    const pctPaid = P > 0 ? Math.min(100, (paidDown / P) * 100) : 0;
-    const offsetSaved = Math.max(0, periodInterestNoOffset - periodInterest);
-
-    document.getElementById('paidDownOut').textContent = audExact.format(paidDown);
-    document.getElementById('remainingSubOut').textContent = `Remaining Balance: ${audExact.format(periodEndBalance)}`;
-    document.getElementById('periodInterestOut').textContent = audWhole.format(periodInterest);
-    document.getElementById('periodOffsetSavedOut').textContent = audWhole.format(offsetSaved);
-    document.getElementById('pctPaidOut').textContent = pctPaid.toFixed(1) + '%';
-    document.getElementById('progressLabel').textContent = pctPaid.toFixed(1) + '%';
-    document.getElementById('progressBarFill').style.width = pctPaid + '%';
-
     renderChart(yearlyData);
+
+    // Paid Down After Time simulation
+    const periodSim = simulateLoan(P, monthlyRate, baseMonthly, extra, offset, elapsedTotalMonths);
+    const noOffsetSim = simulateLoan(P, monthlyRate, baseMonthly, extra, 0, elapsedTotalMonths);
+    const baselineFullSim = simulateLoan(P, monthlyRate, baseMonthly, 0, 0, 600);
+
+    const principalPaidDown = Math.max(0, P - periodSim.balance);
+    const offsetInterestSaved = Math.max(0, noOffsetSim.totalInterest - periodSim.totalInterest);
+    const pctPaid = P > 0 ? Math.min(100, (principalPaidDown / P) * 100) : 0;
+
+    // End-of-period monthly split
+    const endInterest = periodSim.balance > 0 ? Math.max(0, periodSim.balance - offset) * monthlyRate : 0;
+    const endPrincipal = periodSim.balance > 0 ? Math.min(periodSim.balance, Math.max(0, totalMonthly - endInterest)) : 0;
+
+    // Total time saved over life of loan
+    const savedTotalMonths = Math.max(0, baselineFullSim.monthsElapsed - monthsElapsed);
+    const savedYrs = Math.floor(savedTotalMonths / 12);
+    const savedMths = savedTotalMonths % 12;
+    let savedTimeText = '0 mths';
+    if (savedTotalMonths > 0) {
+      savedTimeText = savedYrs > 0 ? `${savedYrs}y ${savedMths}m` : `${savedMths} mths`;
+    }
+
+    document.getElementById('paidDownHero').textContent = audExact.format(principalPaidDown);
+    document.getElementById('remBalanceOut').textContent = audWhole.format(periodSim.balance);
+    document.getElementById('periodInterestOut').textContent = audWhole.format(periodSim.totalInterest);
+    document.getElementById('offsetSavedOut').textContent = audWhole.format(offsetInterestSaved);
+
+    const elapsedStr = eMths > 0 ? `${eYrs} yrs ${eMths} mths` : `${eYrs} yrs`;
+    document.getElementById('elapsedLabelSummary').textContent = `Progress after ${elapsedStr}`;
+    document.getElementById('pctPaidOut').textContent = `${pctPaid.toFixed(1)}% paid`;
+    document.getElementById('progressFill').style.width = `${pctPaid}%`;
+
+    // Populate bottom Paid Down After Time cards
+    document.getElementById('periodTotalPaidOut').textContent = audExact.format(periodSim.totalPaid);
+    document.getElementById('timeSavedOut').textContent = savedTimeText;
+    document.getElementById('endMonthInterestOut').textContent = `${audExact.format(endInterest)}/mo`;
+    document.getElementById('endMonthPrincipalOut').textContent = `${audExact.format(endPrincipal)}/mo`;
   }
 
   function renderChart(data) {
@@ -794,42 +847,49 @@
   bindPair('yearsNum', 'yearsSlider');
   bindPair('offsetNum', 'offsetSlider');
   bindPair('extraNum', 'extraSlider');
-  bindPair('elYearsNum', 'elYearsSlider');
+  bindPair('elapsedYrsNum', 'elapsedYrsSlider');
 
   document.getElementById('monthsNum').addEventListener('input', calculate);
-  document.getElementById('elMonthsNum').addEventListener('input', calculate);
+  document.getElementById('elapsedMthsNum').addEventListener('input', calculate);
 
-  // Tab switching
-  const tabRepayBtn = document.getElementById('tabRepayBtn');
-  const tabEquityBtn = document.getElementById('tabEquityBtn');
-  const repaySection = document.getElementById('repaySection');
-  const equitySection = document.getElementById('equitySection');
+  // Tab switching (syncs both top view and bottom breakdown grid)
+  const tabRepayments = document.getElementById('tabRepayments');
+  const tabPaidDown = document.getElementById('tabPaidDown');
+  const viewRepayments = document.getElementById('viewRepayments');
+  const viewPaidDown = document.getElementById('viewPaidDown');
+  const bottomRepayments = document.getElementById('bottomRepayments');
+  const bottomPaidDown = document.getElementById('bottomPaidDown');
 
-  tabRepayBtn.addEventListener('click', () => {
-    tabRepayBtn.classList.add('active');
-    tabEquityBtn.classList.remove('active');
-    repaySection.classList.remove('hidden');
-    equitySection.classList.add('hidden');
+  tabRepayments.addEventListener('click', () => {
+    tabRepayments.classList.add('active');
+    tabPaidDown.classList.remove('active');
+    viewRepayments.classList.remove('hidden');
+    viewPaidDown.classList.add('hidden');
+    bottomRepayments.classList.remove('hidden');
+    bottomPaidDown.classList.add('hidden');
   });
 
-  tabEquityBtn.addEventListener('click', () => {
-    tabEquityBtn.classList.add('active');
-    tabRepayBtn.classList.remove('active');
-    equitySection.classList.remove('hidden');
-    repaySection.classList.add('hidden');
+  tabPaidDown.addEventListener('click', () => {
+    tabPaidDown.classList.add('active');
+    tabRepayments.classList.remove('active');
+    viewPaidDown.classList.remove('hidden');
+    viewRepayments.classList.add('hidden');
+    bottomPaidDown.classList.remove('hidden');
+    bottomRepayments.classList.add('hidden');
   });
 
-  // Theme switching
+  // Theme toggle
   const themeBtn = document.getElementById('themeBtn');
+  const themeMeta = document.getElementById('themeMeta');
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('mortgageProTheme', theme);
     themeBtn.textContent = theme === 'light' ? '🌙 Dark' : '☀️ Light';
-    document.getElementById('metaThemeColor').setAttribute('content', theme === 'light' ? '#ffffff' : '#1e1f22');
+    themeMeta.setAttribute('content', theme === 'light' ? '#ffffff' : '#1e1f22');
+    localStorage.setItem('mortgage_pro_theme', theme);
     document.querySelectorAll('input[type="range"]').forEach(updateSliderFill);
   }
 
-  const savedTheme = localStorage.getItem('mortgageProTheme') || 'dark';
+  const savedTheme = localStorage.getItem('mortgage_pro_theme') || 'dark';
   applyTheme(savedTheme);
 
   themeBtn.addEventListener('click', () => {
@@ -837,28 +897,20 @@
     applyTheme(current === 'light' ? 'dark' : 'light');
   });
 
-  // Reset buttons
-  function resetAll() {
-    document.getElementById('principalNum').value = '';
+  // Reset
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    ['principalNum', 'rateNum', 'yearsNum', 'monthsNum', 'offsetNum', 'extraNum', 'elapsedYrsNum', 'elapsedMthsNum'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
     document.getElementById('principalSlider').value = 0;
-    document.getElementById('rateNum').value = '';
     document.getElementById('rateSlider').value = 0;
-    document.getElementById('yearsNum').value = '';
     document.getElementById('yearsSlider').value = 1;
-    document.getElementById('monthsNum').value = '';
-    document.getElementById('offsetNum').value = '';
     document.getElementById('offsetSlider').value = 0;
-    document.getElementById('extraNum').value = '';
     document.getElementById('extraSlider').value = 0;
-    document.getElementById('elYearsNum').value = '';
-    document.getElementById('elYearsSlider').value = 0;
-    document.getElementById('elMonthsNum').value = '';
+    document.getElementById('elapsedYrsSlider').value = 0;
     document.querySelectorAll('input[type="range"]').forEach(updateSliderFill);
     calculate();
-  }
-
-  document.getElementById('resetBtn1').addEventListener('click', resetAll);
-  document.getElementById('resetBtn2').addEventListener('click', resetAll);
+  });
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
