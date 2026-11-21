@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en-AU" data-theme="light">
+<html lang="en-AU">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Australian Mortgage Repayment Calculator</title>
+  <title>Mortgage Repayment Calculator</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0f4c81" id="themeMeta" />
+  <meta name="theme-color" content="#0f4c81" />
   <link rel="icon" type="image/png" href="icon.png" />
   <style>
-    :root, [data-theme="light"] {
+    :root {
       --primary: #0f4c81;
       --bg: #f4f6f9;
       --card: #ffffff;
       --input-bg: #ffffff;
-      --sub-card: #f8fafc;
+      --sub-bg: #f8fafc;
       --accent-bg: #eff6ff;
       --accent-border: #bfdbfe;
       --text: #1f2937;
@@ -22,17 +22,17 @@
       --green: #15803d;
     }
 
-    [data-theme="dark"] {
-      --primary: #4c8bf5;
+    body.dark-theme {
+      --primary: #60a5fa;
       --bg: #131314;
       --card: #1e1f22;
       --input-bg: #2b2c30;
-      --sub-card: #26272b;
-      --accent-bg: #1a2436;
-      --accent-border: #2c3e5e;
+      --sub-bg: #25262a;
+      --accent-bg: #1e293b;
+      --accent-border: #334155;
       --text: #e8eaed;
       --muted: #9aa0a6;
-      --border: #383a40;
+      --border: #383a3f;
       --green: #4ade80;
     }
 
@@ -45,7 +45,7 @@
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
-      padding: 18px 14px 32px;
+      padding: 18px 14px 36px;
       display: flex;
       justify-content: center;
       transition: background-color 0.2s, color 0.2s;
@@ -55,89 +55,117 @@
       background: var(--card);
       max-width: 540px;
       width: 100%;
-      padding: 22px;
+      padding: 24px;
       border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       border: 1px solid var(--border);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
-    .header-top {
+    .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
       margin-bottom: 14px;
     }
 
     h1 {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       margin: 0;
       color: var(--primary);
     }
 
-    .btn-group {
+    .top-actions {
       display: flex;
       gap: 6px;
     }
 
-    .small-btn {
-      background: var(--sub-card);
+    .btn-sm {
+      background: var(--sub-bg);
       color: var(--text);
       border: 1px solid var(--border);
       padding: 6px 10px;
       border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 600;
+      font-size: 0.8rem;
       cursor: pointer;
     }
 
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--sub-card);
-      padding: 4px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
+    .hero-box {
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
       margin-bottom: 18px;
     }
 
-    .tab-btn {
-      background: transparent;
+    .hero-box span {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       color: var(--muted);
-      border: none;
-      padding: 8px;
-      border-radius: 7px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
+      margin-bottom: 4px;
     }
 
-    .tab-btn.active {
-      background: var(--primary);
-      color: #ffffff;
+    .hero-box strong {
+      font-size: 2rem;
+      color: var(--primary);
     }
 
-    .grid-2 {
+    .hero-sub {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--accent-border);
+      text-align: center;
+    }
+
+    .hero-sub div span {
+      font-size: 0.7rem;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .hero-sub div strong {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .sec-heading {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+      margin: 18px 0 12px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
+      margin-bottom: 12px;
     }
 
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     label {
       display: block;
       font-weight: 600;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       margin-bottom: 5px;
     }
 
     input {
       width: 100%;
-      padding: 9px 11px;
-      font-size: 0.96rem;
+      padding: 9px 10px;
+      font-size: 0.95rem;
       background: var(--input-bg);
       color: var(--text);
       border: 1px solid var(--border);
@@ -149,65 +177,35 @@
       border-color: var(--primary);
     }
 
-    .term-row {
+    .term-pair {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
     }
 
     .sub-hint {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--muted);
+      display: block;
       margin-top: 2px;
-      display: block;
-    }
-
-    .results {
-      margin-top: 18px;
-      background: var(--accent-bg);
-      border: 1px solid var(--accent-border);
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .result-main {
-      text-align: center;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--accent-border);
-      margin-bottom: 14px;
-    }
-
-    .result-main span.label {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .result-main strong {
-      font-size: 1.95rem;
-      color: var(--primary);
-      display: block;
-      margin: 2px 0;
-    }
-
-    .result-main small {
-      font-size: 0.75rem;
-      color: var(--muted);
     }
 
     .result-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+      margin-top: 10px;
     }
 
     .result-item {
-      background: var(--card);
+      background: var(--sub-bg);
       padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid var(--border);
+    }
+
+    .result-item.full {
+      grid-column: span 2;
     }
 
     .result-item span {
@@ -218,30 +216,89 @@
     }
 
     .result-item strong {
-      font-size: 1rem;
-      color: var(--text);
+      font-size: 0.98rem;
     }
 
-    .result-item strong.green {
-      color: var(--green);
+    .fixed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0 8px;
+    }
+
+    .fixed-header span {
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .empty-fixed {
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--sub-bg);
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px dashed var(--border);
+      margin-bottom: 10px;
+    }
+
+    .fixed-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 8px;
+      background: var(--sub-bg);
+      padding: 7px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .fx-label {
+      flex: 1;
+      min-width: 75px;
+      padding: 5px 6px;
+      font-size: 0.78rem;
+    }
+
+    .fx-field {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .fx-field input {
+      width: 48px;
+      padding: 4px;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .fx-del {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.9rem;
     }
 
     .progress-wrap {
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid var(--accent-border);
+      margin: 12px 0;
     }
 
-    .progress-header {
+    .progress-top {
       display: flex;
       justify-content: space-between;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
+      color: var(--muted);
       margin-bottom: 5px;
     }
 
-    .progress-bar {
-      height: 9px;
-      background: var(--card);
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--sub-bg);
       border-radius: 6px;
       overflow: hidden;
       border: 1px solid var(--border);
@@ -249,353 +306,503 @@
 
     .progress-fill {
       height: 100%;
-      background: var(--primary);
+      background: var(--green);
       width: 0%;
       transition: width 0.25s ease;
-    }
-
-    .hidden {
-      display: none;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="header-top">
+  <div class="top-bar">
     <h1>Mortgage Calculator</h1>
-    <div class="btn-group">
-      <button class="small-btn" id="themeBtn" type="button">🌙 Dark</button>
-      <button class="small-btn" id="resetBtn" type="button">Reset</button>
+    <div class="top-actions">
+      <button class="btn-sm" id="themeBtn" type="button">🌙 Dark</button>
+      <button class="btn-sm" id="resetBtn" type="button">Reset</button>
     </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" id="tabRepay" type="button">Repayments</button>
-    <button class="tab-btn" id="tabPaidDown" type="button">Paid Down After Time</button>
+  <div class="hero-box">
+    <span>Required Monthly Repayment</span>
+    <strong id="monthlyOut">$2,310.81</strong>
+    <div class="hero-sub">
+      <div>
+        <span>Remaining Interest</span>
+        <strong id="futureInterestOut">$199,291</strong>
+      </div>
+      <div>
+        <span>Remaining Total</span>
+        <strong id="futureTotalOut">$487,580</strong>
+      </div>
+      <div>
+        <span>Est. Payoff</span>
+        <strong id="payoffTimeOut">17y 7m</strong>
+      </div>
+    </div>
   </div>
 
-  <!-- Shared Loan Inputs -->
-  <div class="grid-2">
-    <div class="form-group">
-      <label for="principal">Full Loan Balance ($)</label>
-      <input type="number" id="principal" value="288289" min="0" step="100" />
+  <!-- SECTION 1: CURRENT REMAINING LOAN -->
+  <div class="sec-heading">1. Current Remaining Loan (Active)</div>
+
+  <div class="form-grid">
+    <div>
+      <label for="remBalance">Remaining Balance ($)</label>
+      <input type="number" id="remBalance" value="288289" min="0" step="100" />
     </div>
-    <div class="form-group">
-      <label for="rate">Interest Rate (% p.a.)</label>
-      <input type="number" id="rate" value="6.59" min="0" max="100" step="0.01" />
+    <div>
+      <label>Remaining Term</label>
+      <div class="term-pair">
+        <div>
+          <input type="number" id="remYears" value="17" min="0" max="40" />
+          <span class="sub-hint">Years</span>
+        </div>
+        <div>
+          <input type="number" id="remMonths" value="7" min="0" max="11" />
+          <span class="sub-hint">Months</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div>
+      <label for="curRate">Current Rate (%)</label>
+      <input type="number" id="curRate" value="6.59" min="0" max="25" step="0.01" />
+    </div>
+    <div>
+      <label for="offsetBal">Offset Balance ($)</label>
+      <input type="number" id="offsetBal" value="0" min="0" step="500" />
     </div>
   </div>
 
   <div class="form-group">
-    <label>Full Loan Term</label>
-    <div class="term-row">
-      <div>
-        <input type="number" id="years" value="17" min="0" max="40" />
-        <span class="sub-hint">Years</span>
-      </div>
-      <div>
-        <input type="number" id="months" value="7" min="0" max="11" />
-        <span class="sub-hint">Months</span>
+    <label for="extraPay">Extra Monthly Payment ($)</label>
+    <input type="number" id="extraPay" value="0" min="0" step="50" />
+  </div>
+
+  <div class="result-grid">
+    <div class="result-item">
+      <span>Current Monthly Interest</span>
+      <strong id="curInterestOut">$1,583.19</strong>
+    </div>
+    <div class="result-item">
+      <span>Current Monthly Principal</span>
+      <strong id="curPrincipalOut">$727.62</strong>
+    </div>
+    <div class="result-item">
+      <span>Fortnightly (True)</span>
+      <strong id="fortnightlyOut">$1,065.69</strong>
+    </div>
+    <div class="result-item">
+      <span>Weekly (True)</span>
+      <strong id="weeklyOut">$532.67</strong>
+    </div>
+    <div class="result-item full">
+      <span>Future Interest Saved (via Offset &amp; Extra)</span>
+      <strong id="futureSavedOut" style="color: var(--green);">$0</strong>
+    </div>
+  </div>
+
+  <!-- SECTION 2: FULL ORIGINAL LOAN & ELAPSED HISTORY -->
+  <div class="sec-heading">2. Original Loan &amp; Elapsed History</div>
+
+  <div class="form-grid">
+    <div>
+      <label for="fullLoan">Full Original Loan ($)</label>
+      <input type="number" id="fullLoan" value="400000" min="0" step="1000" />
+    </div>
+    <div>
+      <label>Full Original Term</label>
+      <div class="term-pair">
+        <div>
+          <input type="number" id="fullYears" value="30" min="0" max="40" />
+          <span class="sub-hint">Years</span>
+        </div>
+        <div>
+          <input type="number" id="fullMonths" value="0" min="0" max="11" />
+          <span class="sub-hint">Months</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="grid-2">
-    <div class="form-group">
-      <label for="offset">Offset Balance ($)</label>
-      <input type="number" id="offset" value="0" min="0" step="500" />
+  <div class="form-grid">
+    <div>
+      <label for="startDateInput">Loan Start Month (Est.)</label>
+      <input type="month" id="startDateInput" />
     </div>
-    <div class="form-group">
-      <label for="extra">Extra Monthly ($)</label>
-      <input type="number" id="extra" value="0" min="0" step="50" />
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label>Elapsed Period (Already Paid)</label>
-    <div class="term-row">
-      <div>
-        <input type="number" id="elapsedYears" value="0" min="0" max="40" />
-        <span class="sub-hint">Years Elapsed</span>
-      </div>
-      <div>
-        <input type="number" id="elapsedMonths" value="0" min="0" max="11" />
-        <span class="sub-hint">Months Elapsed</span>
-      </div>
+    <div>
+      <label for="endDateInput">Loan End Month (Est.)</label>
+      <input type="month" id="endDateInput" />
     </div>
   </div>
 
-  <!-- View 1: Standard Repayments & Remaining Projection -->
-  <div class="results" id="viewRepay">
-    <div class="result-main">
-      <span class="label">Minimum Monthly Repayment</span>
-      <strong id="monthlyOut">$2,310.81</strong>
-      <small>Based on full loan &amp; full term (offset reduces interest, not minimum payment)</small>
-    </div>
+  <div class="fixed-header">
+    <span>Past Fixed-Rate Periods (Optional)</span>
+    <button type="button" class="btn-sm" id="addFixedBtn">+ Add Fixed Period</button>
+  </div>
+  <div id="fixedPeriodsContainer"></div>
 
-    <div class="result-grid">
-      <div class="result-item">
-        <span>Current Monthly Interest</span>
-        <strong id="curInterestOut">$1,583.19</strong>
-      </div>
-      <div class="result-item">
-        <span>Current Monthly Principal</span>
-        <strong id="curPrincipalOut">$727.62</strong>
-      </div>
-      <div class="result-item">
-        <span>Fortnightly (True)</span>
-        <strong id="fortnightlyOut">$1,065.69</strong>
-      </div>
-      <div class="result-item">
-        <span>Weekly (True)</span>
-        <strong id="weeklyOut">$532.67</strong>
-      </div>
-      <div class="result-item">
-        <span>Remaining Balance</span>
-        <strong id="repRemBalOut">$288,289.00</strong>
-      </div>
-      <div class="result-item">
-        <span>Est. Payoff Left</span>
-        <strong id="repPayoffOut">17 yrs 7 mths</strong>
-      </div>
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span>Principal Paid Off</span>
+      <strong id="pctPaidOut">27.9%</strong>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressBarFill"></div>
     </div>
   </div>
 
-  <!-- View 2: Paid Down After Elapsed Period -->
-  <div class="results hidden" id="viewPaidDown">
-    <div class="result-main">
-      <span class="label">Remaining Loan Balance</span>
-      <strong id="pdRemBalOut">$288,289.00</strong>
-      <small id="pdRemTermSub">Remaining Contract Term: 17 yrs 7 mths</small>
+  <div class="result-grid">
+    <div class="result-item">
+      <span>Principal Paid Down</span>
+      <strong id="paidSoFarOut" style="color: var(--green);">$111,711</strong>
     </div>
-
-    <div class="result-grid">
-      <div class="result-item">
-        <span>Principal Paid Down</span>
-        <strong class="green" id="pdPrincipalOut">$0.00</strong>
-      </div>
-      <div class="result-item">
-        <span>Remaining Term</span>
-        <strong id="pdRemTermOut">17 yrs 7 mths</strong>
-      </div>
-      <div class="result-item">
-        <span>Total Paid (incl. Extras)</span>
-        <strong id="pdTotalPaidOut">$0.00</strong>
-      </div>
-      <div class="result-item">
-        <span>Interest Paid in Period</span>
-        <strong id="pdInterestOut">$0.00</strong>
-      </div>
-      <div class="result-item">
-        <span>Offset Interest Saved</span>
-        <strong class="green" id="pdOffsetSavedOut">$0.00</strong>
-      </div>
-      <div class="result-item">
-        <span>Remaining Interest Ahead</span>
-        <strong id="pdRemIntAheadOut">$199,291.13</strong>
-      </div>
+    <div class="result-item">
+      <span>Elapsed Loan Period</span>
+      <strong id="elapsedTermOut">12y 5m</strong>
     </div>
-
-    <div class="progress-wrap">
-      <div class="progress-header">
-        <span>Principal Paid Off</span>
-        <strong id="pdPctOut">0.0%</strong>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="pdProgressFill"></div>
-      </div>
+    <div class="result-item">
+      <span>Known Past Fixed Interest</span>
+      <strong id="pastFixedIntOut">$0 (None added)</strong>
+    </div>
+    <div class="result-item">
+      <span>Elapsed Rate Split</span>
+      <strong id="pastFixedTermOut">0 mths fixed / 12y 5m variable</strong>
     </div>
   </div>
 </div>
 
 <script>
-  const formatter = new Intl.NumberFormat('en-AU', {
-    style: 'currency',
-    currency: 'AUD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
 
-  function formatYrsMths(totalMths) {
-    if (totalMths <= 0) return '0 yrs 0 mths';
-    const y = Math.floor(totalMths / 12);
-    const m = totalMths % 12;
-    const yStr = y === 1 ? '1 yr' : `${y} yrs`;
-    const mStr = m === 1 ? '1 mth' : `${m} mths`;
-    if (y === 0) return mStr;
-    return m === 0 ? yStr : `${yStr} ${mStr}`;
+  const audExact = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const audWhole = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD', maximumFractionDigits: 0 });
+
+  function formatShortK(val) {
+    if (!val || val <= 0) return '$0';
+    if (val >= 1000000) return '$' + (val / 1000000).toFixed(2).replace(/\.00$/, '') + 'M';
+    if (val >= 1000) return '$' + Math.round(val / 1000) + 'k';
+    return '$' + Math.round(val);
   }
 
-  function pmt(periodicRate, totalPeriods, presentValue) {
-    if (totalPeriods <= 0 || presentValue <= 0) return 0;
-    if (periodicRate === 0) return presentValue / totalPeriods;
-    const factor = Math.pow(1 + periodicRate, totalPeriods);
-    return (presentValue * periodicRate * factor) / (factor - 1);
+  function pmt(r, n, pv) {
+    if (n <= 0 || pv <= 0) return 0;
+    if (r === 0) return pv / n;
+    const f = Math.pow(1 + r, n);
+    return (pv * r * f) / (f - 1);
+  }
+
+  function formatYrsMths(totalMonths) {
+    const m = Math.max(0, Math.round(totalMonths));
+    const y = Math.floor(m / 12);
+    const rem = m % 12;
+    if (m === 0) return '0 mths';
+    if (y === 0) return `${rem} ${rem === 1 ? 'mth' : 'mths'}`;
+    if (rem === 0) return `${y} ${y === 1 ? 'yr' : 'yrs'}`;
+    return `${y}y ${rem}m`;
+  }
+
+  let pastFixedList = [];
+
+  function addFixedPeriod(rate = 5.99, yrs = 2, mths = 0, label = '') {
+    pastFixedList.push({
+      id: Date.now() + Math.random(),
+      rate,
+      yrs,
+      mths,
+      label
+    });
+    renderFixedPeriods();
+    calculate();
+  }
+
+  function removeFixedPeriod(id) {
+    pastFixedList = pastFixedList.filter(p => p.id !== id);
+    renderFixedPeriods();
+    calculate();
+  }
+
+  function updateFixedPeriod(id, field, val) {
+    const item = pastFixedList.find(p => p.id === id);
+    if (!item) return;
+    if (field === 'label') {
+      item.label = val;
+    } else {
+      item[field] = parseFloat(val) || 0;
+    }
+    calculate();
+  }
+
+  function renderFixedPeriods() {
+    const container = document.getElementById('fixedPeriodsContainer');
+    if (!container) return;
+    if (pastFixedList.length === 0) {
+      container.innerHTML = '<div class="empty-fixed">No past fixed-rate periods added. Add one above if you had fixed rates in the past to estimate historical interest paid.</div>';
+      return;
+    }
+    container.innerHTML = pastFixedList.map((p, idx) => `
+      <div class="fixed-row">
+        <input type="text" class="fx-label" placeholder="Period ${idx + 1} (e.g. 2021-2023)" value="${p.label}" oninput="updateFixedPeriod(${p.id}, 'label', this.value)" />
+        <div class="fx-field">
+          <input type="number" step="0.01" min="0" max="30" value="${p.rate}" oninput="updateFixedPeriod(${p.id}, 'rate', this.value)" />
+          <span>%</span>
+        </div>
+        <div class="fx-field">
+          <input type="number" min="0" max="40" value="${p.yrs}" oninput="updateFixedPeriod(${p.id}, 'yrs', this.value)" />
+          <span>y</span>
+        </div>
+        <div class="fx-field">
+          <input type="number" min="0" max="11" value="${p.mths}" oninput="updateFixedPeriod(${p.id}, 'mths', this.value)" />
+          <span>m</span>
+        </div>
+        <button type="button" class="fx-del" onclick="removeFixedPeriod(${p.id})" title="Remove">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function syncDatesFromTerms() {
+    const startInput = document.getElementById('startDateInput');
+    const endInput = document.getElementById('endDateInput');
+    if (!startInput || !endInput) return;
+
+    const fullY = parseInt(document.getElementById('fullYears').value) || 0;
+    const fullM = parseInt(document.getElementById('fullMonths').value) || 0;
+    const remY = parseInt(document.getElementById('remYears').value) || 0;
+    const remM = parseInt(document.getElementById('remMonths').value) || 0;
+
+    const fullTotalM = (fullY * 12) + fullM;
+    const remTotalM = (remY * 12) + remM;
+    const elapsedM = Math.max(0, fullTotalM - remTotalM);
+
+    const now = new Date();
+    const startD = new Date(now.getFullYear(), now.getMonth() - elapsedM, 1);
+    const endD = new Date(now.getFullYear(), now.getMonth() + remTotalM, 1);
+
+    startInput.value = `${startD.getFullYear()}-${String(startD.getMonth() + 1).padStart(2, '0')}`;
+    endInput.value = `${endD.getFullYear()}-${String(endD.getMonth() + 1).padStart(2, '0')}`;
+  }
+
+  function applyDatesToTerms() {
+    const startVal = document.getElementById('startDateInput').value;
+    const endVal = document.getElementById('endDateInput').value;
+    if (!startVal || !endVal) return;
+
+    const [sY, sM] = startVal.split('-').map(Number);
+    const [eY, eM] = endVal.split('-').map(Number);
+    const now = new Date();
+    const cY = now.getFullYear();
+    const cM = now.getMonth() + 1;
+
+    const fullTotalM = Math.max(0, (eY - sY) * 12 + (eM - sM));
+    const remTotalM = Math.max(0, (eY - cY) * 12 + (eM - cM));
+
+    document.getElementById('fullYears').value = Math.floor(fullTotalM / 12);
+    document.getElementById('fullMonths').value = fullTotalM % 12;
+    document.getElementById('remYears').value = Math.floor(remTotalM / 12);
+    document.getElementById('remMonths').value = remTotalM % 12;
+
+    if (document.getElementById('remYearsSlider')) {
+      document.getElementById('remYearsSlider').value = Math.min(40, Math.max(1, Math.floor(remTotalM / 12)));
+      updateSliderFill(document.getElementById('remYearsSlider'));
+    }
+    calculate();
+  }
+
+  function updateSliderFill(slider) {
+    if (!slider) return;
+    const min = parseFloat(slider.min) || 0;
+    const max = parseFloat(slider.max) || 100;
+    const val = parseFloat(slider.value) || 0;
+    const pct = Math.min(100, Math.max(0, ((val - min) / (max - min)) * 100));
+    const track = getComputedStyle(document.documentElement).getPropertyValue('--track').trim() || '#3c4043';
+    slider.style.background = `linear-gradient(to right, #4c8bf5 ${pct}%, ${track} ${pct}%)`;
   }
 
   function calculate() {
-    const fullLoan = parseFloat(document.getElementById('principal').value) || 0;
-    const annualRate = (parseFloat(document.getElementById('rate').value) || 0) / 100;
-    const fullYears = parseInt(document.getElementById('years').value) || 0;
-    const fullMonths = parseInt(document.getElementById('months').value) || 0;
-    const offset = parseFloat(document.getElementById('offset').value) || 0;
-    const extra = parseFloat(document.getElementById('extra').value) || 0;
-    const elYears = parseInt(document.getElementById('elapsedYears').value) || 0;
-    const elMonths = parseInt(document.getElementById('elapsedMonths').value) || 0;
+    // 1. Remaining Balance & Remaining Term (Drive current & future repayments)
+    const remBal = parseFloat(document.getElementById('remBalance').value) || 0;
+    const remY = parseInt(document.getElementById('remYears').value) || 0;
+    const remM = parseInt(document.getElementById('remMonths').value) || 0;
+    const remTotalMonths = (remY * 12) + remM;
+    const remTotalYearsExact = remY + (remM / 12);
 
-    const fullTermMonths = (fullYears * 12) + fullMonths;
-    const fullTermYearsExact = fullYears + (fullMonths / 12);
-    const elapsedTotalMonths = Math.min(fullTermMonths, (elYears * 12) + elMonths);
-    const remainingTermMonths = Math.max(0, fullTermMonths - elapsedTotalMonths);
-    const monthlyRate = annualRate / 12;
+    // 2. Full Original Loan & Full Term (Drive historical / elapsed statistics)
+    const fullLoan = parseFloat(document.getElementById('fullLoan').value) || 0;
+    const fullY = parseInt(document.getElementById('fullYears').value) || 0;
+    const fullM = parseInt(document.getElementById('fullMonths').value) || 0;
+    const fullTotalMonths = (fullY * 12) + fullM;
 
-    // Minimum scheduled repayment strictly from full loan & full term
-    const minMonthly = pmt(monthlyRate, fullTermMonths, fullLoan);
-    const actualMonthlyOutflow = (fullLoan > 0 && fullTermMonths > 0) ? (minMonthly + extra) : 0;
+    // 3. Current Rate, Offset, Extra Monthly (Apply strictly to current/remaining loan forward)
+    const curRate = (parseFloat(document.getElementById('curRate').value) || 0) / 100;
+    const offset = parseFloat(document.getElementById('offsetBal').value) || 0;
+    const extra = parseFloat(document.getElementById('extraPay').value) || 0;
 
-    const fortnightlyTrue = pmt(annualRate / 26, fullTermYearsExact * 26, fullLoan);
-    const weeklyTrue = pmt(annualRate / 52, fullTermYearsExact * 52, fullLoan);
+    // Update slider readouts if present
+    if (document.getElementById('remBalReadout')) document.getElementById('remBalReadout').textContent = formatShortK(remBal);
+    if (document.getElementById('rateReadout')) document.getElementById('rateReadout').textContent = (curRate * 100).toFixed(2).replace(/\.00$/, '.0') + '%';
+    if (document.getElementById('remTermReadout')) document.getElementById('remTermReadout').textContent = formatYrsMths(remTotalMonths);
+    if (document.getElementById('offsetReadout')) document.getElementById('offsetReadout').textContent = formatShortK(offset);
+    if (document.getElementById('extraReadout')) document.getElementById('extraReadout').textContent = `${audWhole.format(extra)}/mo`;
 
-    // Simulate elapsed months
-    let bal = fullLoan;
-    let balNoOffset = fullLoan;
-    let elapsedInterest = 0;
-    let elapsedInterestNoOffset = 0;
-    let elapsedTotalPaid = 0;
+    // Minimum repayment is strictly based on Remaining Balance, Remaining Term, and Current Rate (Offset does NOT reduce minimum repayment)
+    const monthlyRate = curRate / 12;
+    const baseMonthly = pmt(monthlyRate, remTotalMonths, remBal);
+    const actualMonthlyOutflow = remBal > 0 && remTotalMonths > 0 ? baseMonthly + extra : 0;
 
-    if (fullLoan > 0 && fullTermMonths > 0 && elapsedTotalMonths > 0) {
-      for (let m = 1; m <= elapsedTotalMonths; m++) {
-        if (bal > 0.005) {
-          const effBal = Math.max(0, bal - offset);
-          const intM = effBal * monthlyRate;
-          let payment = actualMonthlyOutflow;
-          if (bal + intM < payment) {
-            payment = bal + intM;
-          }
-          bal = Math.max(0, bal - (payment - intM));
-          elapsedInterest += intM;
-          elapsedTotalPaid += payment;
-        }
-        if (balNoOffset > 0.005) {
-          const intNoOff = balNoOffset * monthlyRate;
-          let payNoOff = actualMonthlyOutflow;
-          if (balNoOffset + intNoOff < payNoOff) {
-            payNoOff = balNoOffset + intNoOff;
-          }
-          balNoOffset = Math.max(0, balNoOffset - (payNoOff - intNoOff));
-          elapsedInterestNoOffset += intNoOff;
-        }
-      }
-    }
+    // Current Month 1 split (Offset reduces interest-bearing balance)
+    const effectiveInterestBal = Math.max(0, remBal - offset);
+    const curMonthInterest = effectiveInterestBal * monthlyRate;
+    const curMonthPrincipal = Math.min(remBal, Math.max(0, actualMonthlyOutflow - curMonthInterest));
 
-    const remainingBalance = bal;
-    const principalPaidDown = Math.max(0, fullLoan - remainingBalance);
-    const offsetInterestSaved = Math.max(0, elapsedInterestNoOffset - elapsedInterest);
-    const pctPaidOff = fullLoan > 0 ? Math.min(100, (principalPaidDown / fullLoan) * 100) : 0;
+    // Australian True Fortnightly & Weekly based on Remaining Balance & Remaining Term
+    const fortnightlyTrue = pmt(curRate / 26, remTotalYearsExact * 26, remBal);
+    const weeklyTrue = pmt(curRate / 52, remTotalYearsExact * 52, remBal);
 
-    // Current month split on remaining balance
-    const curEffBal = Math.max(0, remainingBalance - offset);
-    const curMonthlyInterest = remainingBalance > 0 ? curEffBal * monthlyRate : 0;
-    const curMonthlyPrincipal = remainingBalance > 0 ? Math.min(remainingBalance, Math.max(0, actualMonthlyOutflow - curMonthlyInterest)) : 0;
+    // Simulate remaining loan forward from Remaining Balance
+    let simBal = remBal;
+    let futureInterest = 0;
+    let futureTotalPaid = 0;
+    let monthsToPayoff = 0;
+    const yearlyData = [];
+    let yrPrin = 0;
+    let yrInt = 0;
 
-    // Forward simulation from remaining balance
-    let fwdBal = remainingBalance;
-    let remInterestAhead = 0;
-    let fwdMonths = 0;
-    if (fwdBal > 0.005 && actualMonthlyOutflow > 0) {
-      while (fwdBal > 0.005 && fwdMonths < 600) {
-        fwdMonths++;
-        const effBal = Math.max(0, fwdBal - offset);
-        const intM = effBal * monthlyRate;
-        let prinM = actualMonthlyOutflow - intM;
-        if (prinM <= 0 && monthlyRate > 0) {
-          fwdBal = 0;
-        } else if (prinM >= fwdBal) {
-          fwdBal = 0;
+    if (remBal > 0 && baseMonthly > 0) {
+      while (simBal > 0.01 && monthsToPayoff < 600) {
+        monthsToPayoff++;
+        const intCharge = Math.max(0, simBal - offset) * monthlyRate;
+        let prinPaid = actualMonthlyOutflow - intCharge;
+
+        if (prinPaid <= 0 && monthlyRate > 0) {
+          prinPaid = 0;
+          simBal = 0;
+        } else if (prinPaid >= simBal) {
+          prinPaid = simBal;
+          simBal = 0;
         } else {
-          fwdBal -= prinM;
+          simBal -= prinPaid;
         }
-        remInterestAhead += intM;
+
+        futureInterest += intCharge;
+        futureTotalPaid += (prinPaid + intCharge);
+        yrPrin += prinPaid;
+        yrInt += intCharge;
+
+        if (monthsToPayoff % 12 === 0 || simBal === 0) {
+          yearlyData.push({ year: Math.ceil(monthsToPayoff / 12), principal: yrPrin, interest: yrInt });
+          yrPrin = 0;
+          yrInt = 0;
+        }
       }
     }
 
-    // Populate Repayments View
-    document.getElementById('monthlyOut').textContent = formatter.format(minMonthly);
-    document.getElementById('curInterestOut').textContent = formatter.format(curMonthlyInterest);
-    document.getElementById('curPrincipalOut').textContent = formatter.format(curMonthlyPrincipal);
-    document.getElementById('fortnightlyOut').textContent = formatter.format(fortnightlyTrue);
-    document.getElementById('weeklyOut').textContent = formatter.format(weeklyTrue);
-    document.getElementById('repRemBalOut').textContent = formatter.format(remainingBalance);
-    document.getElementById('repPayoffOut').textContent = fwdMonths > 0 ? formatYrsMths(fwdMonths) : 'Paid Off';
+    // Baseline interest without offset or extra (over Remaining Term) to calculate Offset/Extra savings forward
+    const baselineFutureTotal = baseMonthly * remTotalMonths;
+    const baselineFutureInterest = Math.max(0, baselineFutureTotal - remBal);
+    const futureInterestSaved = Math.max(0, baselineFutureInterest - futureInterest);
 
-    // Populate Paid Down View
-    document.getElementById('pdRemBalOut').textContent = formatter.format(remainingBalance);
-    document.getElementById('pdRemTermSub').textContent = 'Remaining Contract Term: ' + formatYrsMths(remainingTermMonths);
-    document.getElementById('pdPrincipalOut').textContent = formatter.format(principalPaidDown);
-    document.getElementById('pdRemTermOut').textContent = formatYrsMths(remainingTermMonths);
-    document.getElementById('pdTotalPaidOut').textContent = formatter.format(elapsedTotalPaid);
-    document.getElementById('pdInterestOut').textContent = formatter.format(elapsedInterest);
-    document.getElementById('pdOffsetSavedOut').textContent = formatter.format(offsetInterestSaved);
-    document.getElementById('pdRemIntAheadOut').textContent = formatter.format(remInterestAhead);
-    document.getElementById('pdPctOut').textContent = pctPaidOff.toFixed(1) + '%';
-    document.getElementById('pdProgressFill').style.width = pctPaidOff + '%';
+    // Historical / Elapsed Statistics (Full Loan minus Current Remaining Balance; Full Term minus Remaining Term)
+    const principalPaidSoFar = Math.max(0, fullLoan - remBal);
+    const elapsedMonths = Math.max(0, fullTotalMonths - remTotalMonths);
+    const pctPaidOff = fullLoan > 0 ? Math.min(100, (principalPaidSoFar / fullLoan) * 100) : 0;
+
+    // Simulate Past Fixed-Rate Periods sequentially from Full Loan Balance
+    let pastSimBal = fullLoan;
+    let pastFixedInterestTotal = 0;
+    let pastFixedMonthsTotal = 0;
+    let pastFixedPrincipalTotal = 0;
+
+    pastFixedList.forEach(fp => {
+      const fpMonths = Math.min(Math.max(0, elapsedMonths - pastFixedMonthsTotal), (Math.floor(fp.yrs) * 12) + Math.floor(fp.mths));
+      if (fpMonths <= 0 || pastSimBal <= 0) return;
+
+      const fpRateMonthly = (fp.rate / 100) / 12;
+      // Remaining contract months at start of this fixed period
+      const termAtPeriodStart = Math.max(1, fullTotalMonths - pastFixedMonthsTotal);
+      const fpPmt = pmt(fpRateMonthly, termAtPeriodStart, pastSimBal);
+
+      for (let m = 0; m < fpMonths; m++) {
+        if (pastSimBal <= 0) break;
+        const mInt = pastSimBal * fpRateMonthly;
+        const mPrin = Math.min(pastSimBal, Math.max(0, fpPmt - mInt));
+        pastSimBal -= mPrin;
+        pastFixedInterestTotal += mInt;
+        pastFixedPrincipalTotal += mPrin;
+        pastFixedMonthsTotal++;
+      }
+    });
+
+    const unallocatedElapsedMonths = Math.max(0, elapsedMonths - pastFixedMonthsTotal);
+
+    // Populate Primary & Future Remaining Outputs
+    document.getElementById('monthlyOut').textContent = audExact.format(baseMonthly);
+    document.getElementById('futureInterestOut').textContent = audWhole.format(futureInterest);
+    document.getElementById('futureTotalOut').textContent = audWhole.format(futureTotalPaid);
+    document.getElementById('payoffTimeOut').textContent = formatYrsMths(monthsToPayoff);
+
+    document.getElementById('curInterestOut').textContent = audExact.format(curMonthInterest);
+    document.getElementById('curPrincipalOut').textContent = audExact.format(curMonthPrincipal);
+    document.getElementById('fortnightlyOut').textContent = audExact.format(fortnightlyTrue);
+    document.getElementById('weeklyOut').textContent = audExact.format(weeklyTrue);
+    document.getElementById('futureSavedOut').textContent = audWhole.format(futureInterestSaved);
+
+    // Populate Historical / Elapsed Statistics
+    document.getElementById('paidSoFarOut').textContent = audWhole.format(principalPaidSoFar);
+    document.getElementById('elapsedTermOut').textContent = formatYrsMths(elapsedMonths);
+    document.getElementById('pctPaidOut').textContent = pctPaidOff.toFixed(1) + '%';
+    document.getElementById('pastFixedIntOut').textContent = pastFixedList.length > 0 ? audWhole.format(pastFixedInterestTotal) : '$0 (None added)';
+    document.getElementById('pastFixedTermOut').textContent = `${formatYrsMths(pastFixedMonthsTotal)} fixed / ${formatYrsMths(unallocatedElapsedMonths)} variable`;
+
+    if (document.getElementById('progressBarFill')) {
+      document.getElementById('progressBarFill').style.width = pctPaidOff.toFixed(1) + '%';
+    }
+
+    if (typeof renderChart === 'function') {
+      renderChart(yearlyData);
+    }
   }
 
-  // Tabs
-  const tabRepay = document.getElementById('tabRepay');
-  const tabPaidDown = document.getElementById('tabPaidDown');
-  const viewRepay = document.getElementById('viewRepay');
-  const viewPaidDown = document.getElementById('viewPaidDown');
 
-  tabRepay.addEventListener('click', () => {
-    tabRepay.classList.add('active');
-    tabPaidDown.classList.remove('active');
-    viewRepay.classList.remove('hidden');
-    viewPaidDown.classList.add('hidden');
+  ['remBalance', 'remYears', 'remMonths', 'fullYears', 'fullMonths'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      syncDatesFromTerms();
+      calculate();
+    });
   });
 
-  tabPaidDown.addEventListener('click', () => {
-    tabPaidDown.classList.add('active');
-    tabRepay.classList.remove('active');
-    viewPaidDown.classList.remove('hidden');
-    viewRepay.classList.add('hidden');
+  ['curRate', 'offsetBal', 'extraPay', 'fullLoan'].forEach(id => {
+    document.getElementById(id).addEventListener('input', calculate);
   });
 
-  // Theme switcher
+  document.getElementById('startDateInput').addEventListener('change', applyDatesToTerms);
+  document.getElementById('endDateInput').addEventListener('change', applyDatesToTerms);
+  document.getElementById('addFixedBtn').addEventListener('click', () => addFixedPeriod());
+
   const themeBtn = document.getElementById('themeBtn');
-  const themeMeta = document.getElementById('themeMeta');
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('mortgageCalcWwwTheme', theme);
-    themeBtn.textContent = theme === 'light' ? '🌙 Dark' : '☀️ Light';
-    themeMeta.setAttribute('content', theme === 'light' ? '#0f4c81' : '#1e1f22');
+  function applyTheme(isDark) {
+    document.body.classList.toggle('dark-theme', isDark);
+    themeBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+    localStorage.setItem('wwwMortgageTheme', isDark ? 'dark' : 'light');
   }
+  applyTheme(localStorage.getItem('wwwMortgageTheme') === 'dark');
+  themeBtn.addEventListener('click', () => applyTheme(!document.body.classList.contains('dark-theme')));
 
-  const savedTheme = localStorage.getItem('mortgageCalcWwwTheme') || 'light';
-  applyTheme(savedTheme);
-
-  themeBtn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    applyTheme(current === 'light' ? 'dark' : 'light');
-  });
-
-  // Reset
   document.getElementById('resetBtn').addEventListener('click', () => {
-    ['principal', 'rate', 'years', 'months', 'offset', 'extra', 'elapsedYears', 'elapsedMonths'].forEach(id => {
+    ['remBalance', 'remYears', 'remMonths', 'curRate', 'offsetBal', 'extraPay', 'fullLoan', 'fullYears', 'fullMonths'].forEach(id => {
       document.getElementById(id).value = '';
     });
+    pastFixedList = [];
+    renderFixedPeriods();
     calculate();
-  });
-
-  document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', calculate);
   });
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
 
+  renderFixedPeriods();
+  syncDatesFromTerms();
   calculate();
 </script>
 
