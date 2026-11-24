@@ -6,12 +6,13 @@ async function getCacheName() {
     const res = await fetch('./index.html', { cache: 'no-store' });
     const html = await res.text();
     const match = html.match(/<meta\s+name=["']app-version["']\s+content=["']([^"']+)["']/i);
-    const version = match ? match.trim() : 'V1.0.1';
+    const version = (match && match[1]) ? match[1].trim() : 'v1';
     return `${CACHE_PREFIX}${version}`;
   } catch (e) {
-    return `${CACHE_PREFIX}V1.0.1`;
+    return `${CACHE_PREFIX}v1`;
   }
 }
+
 
 self.addEventListener('install', event => {
   self.skipWaiting();
