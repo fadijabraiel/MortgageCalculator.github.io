@@ -1,22 +1,16 @@
 const CACHE_PREFIX = 'mortgage-pro-auto-';
-const FALLBACK_VERSION = 'v1';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.png'];
 
 async function getCacheName() {
   try {
-    const response = await fetch('./index.html', { cache: 'no-store' });
-    if (response.ok) {
-      const html = await response.text();
-      const match = html.match(/<meta\s+name=["']app-version["']\s+content=["']([^"']+)["']/i)
-                 || html.match(/<meta\s+content=["']([^"']+)["']\s+name=["']app-version["']/i);
-      if (match && match[1]) {
-        return CACHE_PREFIX + match[1].trim();
-      }
-    }
-  } catch (err) {
-    // Fallback if offline during install/activate
+    const res = await fetch('./index.html', { cache: 'no-store' });
+    const html = await res.text();
+    const match = html.match(/<meta\s+name=["']app-version["']\s+content=["']([^"']+)["']/i);
+    const version = match ? match.trim() : 'V1.0.1';
+    return `${CACHE_PREFIX}${version}`;
+  } catch (e) {
+    return `${CACHE_PREFIX}V1.0.1`;
   }
-  return CACHE_PREFIX + FALLBACK_VERSION;
 }
 
 self.addEventListener('install', event => {
@@ -30,9 +24,13 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    getCacheName().then(cacheName =>
+    getCacheName().then(activeCache =>
       caches.keys().then(keys =>
-        Promise.all(keys.filter(key => key !== cacheName).map(key => caches.delete(key)))
+        Promise.all(
+          keys
+            .filter(key => key.startsWith(CACHE_PREFIX) && key !== activeCache)
+            .map(key => caches.delete(key))
+        )
       )
     ).then(() => self.clients.claim())
   );
@@ -40,16 +38,14 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        if (response && response.status === 200) {
+    getCacheName().then(cacheName =>
+      fetch(event.request)
+        .then(response => {
           const copy = response.clone();
-          getCacheName().then(cacheName =>
-            caches.open(cacheName).then(cache => cache.put(event.request, copy))
-          );
-        }
-        return response;
-      })
-      .catch(() => caches.match(event.request))
+          caches.open(cacheName).then(cache => cache.put(event.request, copy));
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    )
   );
 });
