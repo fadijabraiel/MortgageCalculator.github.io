@@ -2,54 +2,56 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
- <meta name="app-version" content="V1.0.1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="app-version" content="v1" />
   <title>Mortgage Pro Calculator</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0f172a" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon.png" />
   <style>
     :root {
-      --bg: #f8fafc;
+      --bg: #f4f6fa;
       --card: #ffffff;
-      --card-sub: #f1f5f9;
+      --card-alt: #f8fafc;
+      --border: #e2e8f0;
       --text: #0f172a;
       --muted: #64748b;
-      --border: #e2e8f0;
       --accent: #2563eb;
-      --accent-soft: rgba(37, 99, 235, 0.12);
-      --green: #10b981;
-      --green-soft: rgba(16, 185, 129, 0.12);
-      --amber: #f59e0b;
-      --red: #ef4444;
-      --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
-      --radius: 16px;
+      --accent-soft: rgba(37, 99, 235, 0.1);
+      --green: #16a34a;
+      --green-soft: rgba(22, 163, 74, 0.12);
+      --amber: #d97706;
+      --red: #dc2626;
+      --shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
     }
+
     [data-theme="dark"] {
       --bg: #0b1120;
-      --card: #111827;
-      --card-sub: #1e293b;
-      --text: #f8fafc;
+      --card: #131c31;
+      --card-alt: #19243d;
+      --border: #26334d;
+      --text: #f1f5f9;
       --muted: #94a3b8;
-      --border: #1f2937;
       --accent: #3b82f6;
       --accent-soft: rgba(59, 130, 246, 0.16);
-      --green: #34d399;
-      --green-soft: rgba(52, 211, 153, 0.14);
-      --amber: #fbbf24;
-      --red: #f87171;
-      --shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      --green: #22c55e;
+      --green-soft: rgba(34, 197, 94, 0.16);
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.45;
       padding: 16px;
       transition: background 0.2s, color 0.2s;
     }
+
     .container { max-width: 1120px; margin: 0 auto; }
 
-    /* Header */
     header {
       display: flex;
       justify-content: space-between;
@@ -58,51 +60,49 @@
       gap: 12px;
       margin-bottom: 18px;
     }
-    header h1 {
-      font-size: 1.45rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-    .header-actions { display: flex; gap: 8px; align-items: center; }
-    .btn {
+    .title-group h1 { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; }
+    .title-group p { font-size: 0.85rem; color: var(--muted); }
+
+    .header-actions { display: flex; gap: 8px; }
+    button {
+      cursor: pointer;
+      border: 1px solid var(--border);
       background: var(--card);
       color: var(--text);
-      border: 1px solid var(--border);
-      padding: 8px 14px;
+      padding: 7px 13px;
       border-radius: 10px;
       font-size: 0.85rem;
       font-weight: 600;
-      cursor: pointer;
       transition: all 0.15s;
     }
-    .btn:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-primary {
+    button:hover { border-color: var(--accent); }
+    button.primary {
       background: var(--accent);
       color: #fff;
       border-color: var(--accent);
     }
-    .btn-primary:hover { opacity: 0.92; color: #fff; }
 
-    /* Hero Card */
     .hero-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 18px;
       padding: 20px;
       box-shadow: var(--shadow);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .hero-top {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: flex-end;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 16px;
       padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
     }
-    .hero-label { font-size: 0.85rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-    .hero-amount { font-size: 2.3rem; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; }
+    .hero-label { font-size: 0.82rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .hero-amount { font-size: 2.4rem; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; line-height: 1.1; margin-top: 4px; }
+    .hero-sub { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+
     .hero-kpis {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -110,933 +110,858 @@
       margin-top: 16px;
     }
     .kpi-box {
-      background: var(--card-sub);
-      padding: 12px 14px;
+      background: var(--card-alt);
+      border: 1px solid var(--border);
       border-radius: 12px;
+      padding: 12px;
     }
-    .kpi-box .lbl { font-size: 0.78rem; color: var(--muted); display: block; }
-    .kpi-box .val { font-size: 1.15rem; font-weight: 700; margin-top: 2px; display: block; }
-    .val.green { color: var(--green); }
+    .kpi-box .lbl { font-size: 0.78rem; color: var(--muted); }
+    .kpi-box .val { font-size: 1.15rem; font-weight: 700; margin-top: 3px; }
+    .kpi-box .val.green { color: var(--green); }
 
-    /* Main Grid */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 20px;
-      margin-bottom: 20px;
+      gap: 18px;
+      margin-bottom: 18px;
     }
+
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 18px;
       padding: 20px;
       box-shadow: var(--shadow);
+      margin-bottom: 18px;
     }
     .card h2 {
       font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
     }
 
-    /* Form Controls */
     .field { margin-bottom: 14px; }
-    .field label {
+    .field-head {
       display: flex;
       justify-content: space-between;
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--muted);
+      align-items: center;
       margin-bottom: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
     }
-    .field label span.badge {
+    .field-head span.badge {
+      background: var(--accent-soft);
       color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 700;
     }
-    input[type="number"], input[type="month"], input[type="text"] {
+
+    .input-row { display: flex; gap: 8px; align-items: center; }
+    input[type="number"], input[type="text"], input[type="month"] {
       width: 100%;
-      padding: 10px 12px;
+      padding: 9px 11px;
       border-radius: 10px;
       border: 1px solid var(--border);
-      background: var(--card-sub);
+      background: var(--card-alt);
       color: var(--text);
       font-size: 0.95rem;
       font-weight: 600;
-      outline: none;
     }
-    input:focus { border-color: var(--accent); }
     input[type="range"] {
       width: 100%;
       margin-top: 6px;
       accent-color: var(--accent);
       cursor: pointer;
     }
-    .row-2 {
+
+    .mini-stats {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
-    }
-    .input-suffix { position: relative; }
-    .input-suffix span {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.8rem;
-      color: var(--muted);
-      pointer-events: none;
-    }
-
-    /* Mini Summary List */
-    .stat-list {
-      margin-top: 16px;
+      margin-top: 14px;
+      padding-top: 14px;
       border-top: 1px solid var(--border);
-      padding-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
     }
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.88rem;
+    .stat-item {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
     }
-    .stat-row .k { color: var(--muted); }
-    .stat-row .v { font-weight: 700; }
+    .stat-item .k { font-size: 0.76rem; color: var(--muted); }
+    .stat-item .v { font-size: 0.98rem; font-weight: 700; margin-top: 2px; }
+    .stat-item .v.green { color: var(--green); }
 
-    /* Fixed Periods */
-    .fixed-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 14px 0 8px;
-    }
-    .fixed-header span { font-size: 0.84rem; font-weight: 600; color: var(--muted); }
-    .fixed-item {
+    .fixed-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .fixed-row {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr 0.7fr 0.7fr auto;
+      grid-template-columns: 1.4fr 0.8fr 0.7fr 0.7fr auto;
       gap: 6px;
-      margin-bottom: 8px;
       align-items: center;
+      background: var(--card-alt);
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
     }
-    .fixed-item input { padding: 7px 8px; font-size: 0.82rem; }
+    .fixed-row input { padding: 6px 8px; font-size: 0.85rem; }
     .btn-del {
       background: transparent;
-      border: 1px solid var(--border);
+      border: none;
       color: var(--red);
-      border-radius: 8px;
-      padding: 6px 9px;
-      cursor: pointer;
-      font-weight: 700;
+      font-size: 1rem;
+      padding: 4px 8px;
     }
 
-    /* Chart */
-    .chart-wrap {
-      margin-top: 14px;
-      background: var(--card-sub);
-      border-radius: 12px;
-      padding: 14px;
-    }
-    .chart-legend {
-      display: flex;
-      gap: 16px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-    .dot {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 3px;
-      margin-right: 5px;
-    }
-    svg.chart { width: 100%; height: 190px; display: block; overflow: visible; }
-
-    /* Deep Stats Section at Bottom */
-    .deep-section { margin-top: 8px; }
-    .section-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .stats-grid-3 {
+    .deep-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
     }
-    .stat-card {
-      background: var(--card);
+    .deep-box {
+      background: var(--card-alt);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
+      border-radius: 12px;
+      padding: 13px;
     }
-    .stat-card h3 {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    .metric-pill {
-      background: var(--green-soft);
-      color: var(--green);
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 700;
-    }
+    .deep-box .dk { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+    .deep-box .dv { font-size: 1.15rem; font-weight: 800; margin-top: 4px; }
+    .deep-box .ds { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
 
-    /* Stress Test Table */
-    .table-wrap { overflow-x: auto; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.86rem;
-    }
+    .table-wrap { overflow-x: auto; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
     th, td {
       text-align: left;
       padding: 10px 12px;
       border-bottom: 1px solid var(--border);
+      white-space: nowrap;
     }
-    th {
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-    }
-    tr.current-row { background: var(--accent-soft); font-weight: 700; }
+    th { color: var(--muted); font-weight: 700; background: var(--card-alt); }
+    tr.highlight-row { background: var(--accent-soft); font-weight: 700; }
 
-    /* Footer */
-    footer {
-      margin-top: 28px;
-      padding: 18px 12px 24px;
-      border-top: 1px solid var(--border);
-      text-align: center;
+    .chart-box { margin-top: 14px; }
+    canvas { width: 100%; height: 240px; display: block; }
+    .legend {
+      display: flex;
+      gap: 16px;
+      font-size: 0.8rem;
       color: var(--muted);
-      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+    footer {
+      margin-top: 24px;
+      padding: 18px 12px 28px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.84rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
-    .version-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 10px;
+    .version-pill {
+      display: inline-block;
+      padding: 4px 12px;
       border-radius: 999px;
       background: var(--card);
       border: 1px solid var(--border);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.76rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
       color: var(--text);
     }
-    .version-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-    }
-    .disclaimer-text {
-      font-weight: 500;
-      color: var(--muted);
+
+    @media (max-width: 600px) {
+      .fixed-row { grid-template-columns: 1fr 1fr; }
+      .hero-amount { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Mortgage Pro Calculator</h1>
+      <div class="title-group">
+        <h1>Mortgage Pro Calculator</h1>
+        <p>Remaining balance repayments, offset savings, historical tracking & stress tests</p>
+      </div>
       <div class="header-actions">
-        <button class="btn" id="themeToggle" type="button">☀ Light</button>
-        <button class="btn" id="resetBtn" type="button">Reset</button>
+        <button id="themeToggle" type="button">☀️ Light</button>
+        <button id="resetBtn" type="button">Reset</button>
       </div>
     </header>
 
-    <!-- Top Hero Card -->
+    <!-- HERO SUMMARY -->
     <section class="hero-card">
       <div class="hero-top">
         <div>
           <div class="hero-label">Required Monthly Repayment</div>
-          <div class="hero-amount" id="heroMonthly">$2,310.81</div>
+          <div class="hero-amount" id="reqMonthly">$0.00</div>
+          <div class="hero-sub" id="totalMonthlySub">Total monthly outflow (with extra): $0.00</div>
         </div>
-        <div style="text-align: right;">
-          <div class="hero-label">Total Monthly Outlay (incl. Extra)</div>
-          <div style="font-size: 1.25rem; font-weight: 700;" id="heroTotalOutlay">$2,310.81</div>
+        <div class="legend">
+          <span><i class="dot" style="background:#3b82f6"></i>Remaining Principal</span>
+          <span><i class="dot" style="background:#f59e0b"></i>Future Interest</span>
         </div>
       </div>
 
       <div class="hero-kpis">
         <div class="kpi-box">
-          <span class="lbl">Remaining Interest</span>
-          <span class="val" id="kpiRemInterest">$199,291</span>
+          <div class="lbl">Remaining Interest</div>
+          <div class="val" id="remInterest">$0</div>
         </div>
         <div class="kpi-box">
-          <span class="lbl">Remaining Total</span>
-          <span class="val" id="kpiRemTotal">$487,580</span>
+          <div class="lbl">Remaining Total</div>
+          <div class="val" id="remTotal">$0</div>
         </div>
         <div class="kpi-box">
-          <span class="lbl">Est. Payoff Time</span>
-          <span class="val" id="kpiPayoffTime">17y 7m</span>
+          <div class="lbl">Est. Payoff Time</div>
+          <div class="val" id="payoffTime">0y 0m</div>
         </div>
         <div class="kpi-box">
-          <span class="lbl">Future Interest Saved</span>
-          <span class="val green" id="kpiInterestSaved">$0</span>
+          <div class="lbl">Future Interest Saved</div>
+          <div class="val green" id="heroInterestSaved">$0</div>
+        </div>
+        <div class="kpi-box">
+          <div class="lbl">Time Shaved Off</div>
+          <div class="val green" id="heroTimeSaved">0y 0m</div>
         </div>
       </div>
 
-      <div class="chart-wrap">
-        <div class="chart-legend">
-          <span><i class="dot" style="background: var(--accent);"></i>Remaining Principal</span>
-          <span><i class="dot" style="background: var(--amber);"></i>Future Interest</span>
-        </div>
-        <svg class="chart" id="balanceChart" viewBox="0 0 700 180" preserveAspectRatio="none"></svg>
+      <div class="chart-box">
+        <canvas id="amortChart"></canvas>
       </div>
     </section>
 
-    <!-- Main 2-Column Inputs -->
     <div class="grid-2">
-      <!-- Card 1: Current Remaining Loan -->
       <section class="card">
         <h2>1. Current Remaining Loan (Active)</h2>
 
         <div class="field">
-          <label>Current Remaining Balance <span class="badge" id="lblRemBal">$288k</span></label>
-          <input type="number" id="remBalance" value="288289" min="0" step="500" />
-          <input type="range" id="remBalanceSlider" value="288289" min="10000" max="2000000" step="1000" />
-        </div>
-
-        <div class="field">
-          <label>Remaining Term <span class="badge" id="lblRemTerm">17y 7m</span></label>
-          <div class="row-2">
-            <div class="input-suffix">
-              <input type="number" id="remYears" value="17" min="0" max="40" />
-              <span>yrs</span>
-            </div>
-            <div class="input-suffix">
-              <input type="number" id="remMonths" value="7" min="0" max="11" />
-              <span>mths</span>
-            </div>
+          <div class="field-head">
+            <label for="remBalance">Current Remaining Balance</label>
+            <span class="badge" id="remBalanceBadge">$288,289</span>
           </div>
-          <input type="range" id="remYearsSlider" value="17" min="1" max="35" step="1" />
+          <input type="number" id="remBalance" value="288289" min="0" step="1000" />
+          <input type="range" id="remBalanceRange" value="288289" min="0" max="2000000" step="1000" />
         </div>
 
         <div class="field">
-          <label>Current Interest Rate (%) <span class="badge" id="lblRate">6.59%</span></label>
+          <div class="field-head">
+            <label>Remaining Term</label>
+            <span class="badge" id="remTermBadge">17y 7m</span>
+          </div>
+          <div class="input-row">
+            <input type="number" id="remYears" value="17" min="0" max="40" />
+            <span>yrs</span>
+            <input type="number" id="remMonths" value="7" min="0" max="11" />
+            <span>mths</span>
+          </div>
+          <input type="range" id="remTotalMonthsRange" value="211" min="1" max="480" step="1" />
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <label for="interestRate">Current Interest Rate (%)</label>
+            <span class="badge" id="rateBadge">6.59%</span>
+          </div>
           <input type="number" id="interestRate" value="6.59" min="0" max="20" step="0.01" />
-          <input type="range" id="interestRateSlider" value="6.59" min="1" max="12" step="0.05" />
+          <input type="range" id="interestRateRange" value="6.59" min="0.5" max="15" step="0.05" />
         </div>
 
         <div class="field">
-          <label>Offset Balance (Cuts Interest Only) <span class="badge" id="lblOffset">$0</span></label>
-          <input type="number" id="offsetBalance" value="0" min="0" step="500" />
-          <input type="range" id="offsetBalanceSlider" value="0" min="0" max="1000000" step="1000" />
+          <div class="field-head">
+            <label for="offsetBalance">Offset Balance (Cuts Interest Only)</label>
+            <span class="badge" id="offsetBadge">$0</span>
+          </div>
+          <input type="number" id="offsetBalance" value="0" min="0" step="1000" />
+          <input type="range" id="offsetBalanceRange" value="0" min="0" max="1500000" step="1000" />
         </div>
 
         <div class="field">
-          <label>Extra Monthly Repayment <span class="badge" id="lblExtra">$0/mo</span></label>
+          <div class="field-head">
+            <label for="extraMonthly">Extra Monthly Repayment</label>
+            <span class="badge" id="extraBadge">$0/mo</span>
+          </div>
           <input type="number" id="extraMonthly" value="0" min="0" step="50" />
-          <input type="range" id="extraMonthlySlider" value="0" min="0" max="5000" step="50" />
+          <input type="range" id="extraMonthlyRange" value="0" min="0" max="10000" step="50" />
         </div>
 
-        <div class="stat-list">
-          <div class="stat-row"><span class="k">Current Monthly Interest</span><span class="v" id="statCurInterest">$1,583.19</span></div>
-          <div class="stat-row"><span class="k">Current Monthly Principal</span><span class="v" id="statCurPrincipal">$727.62</span></div>
-          <div class="stat-row"><span class="k">Fortnightly (True)</span><span class="v" id="statFortnightly">$1,065.69</span></div>
-          <div class="stat-row"><span class="k">Weekly (True)</span><span class="v" id="statWeekly">$532.67</span></div>
-          <div class="stat-row"><span class="k">Future Interest Saved (via Offset &amp; Extra)</span><span class="v green" id="statSavedInline">$0</span></div>
+        <div class="mini-stats">
+          <div class="stat-item">
+            <div class="k">Current Monthly Interest</div>
+            <div class="v" id="curMonthInterest">$0.00</div>
+          </div>
+          <div class="stat-item">
+            <div class="k">Current Monthly Principal</div>
+            <div class="v" id="curMonthPrincipal">$0.00</div>
+          </div>
+          <div class="stat-item">
+            <div class="k">Fortnightly (True / Half)</div>
+            <div class="v" id="fortnightlyVal">$0.00</div>
+          </div>
+          <div class="stat-item">
+            <div class="k">Weekly (True / Quarter)</div>
+            <div class="v" id="weeklyVal">$0.00</div>
+          </div>
         </div>
       </section>
 
-      <!-- Card 2: Original Loan & Elapsed History -->
       <section class="card">
-        <h2>2. Original Loan &amp; Elapsed History</h2>
+        <h2>2. Original Loan & Elapsed History</h2>
 
         <div class="field">
-          <label>Full Original Loan Amount</label>
-          <input type="number" id="origBalance" value="400000" min="0" step="1000" />
+          <div class="field-head">
+            <label for="origBalance">Full Original Loan Amount</label>
+            <span class="badge" id="origBalanceBadge">$400,000</span>
+          </div>
+          <input type="number" id="origBalance" value="400000" min="0" step="5000" />
         </div>
 
         <div class="field">
-          <label>Full Original Loan Term</label>
-          <div class="row-2">
-            <div class="input-suffix">
-              <input type="number" id="origYears" value="30" min="1" max="40" />
-              <span>yrs</span>
-            </div>
-            <div class="input-suffix">
-              <input type="number" id="origMonths" value="0" min="0" max="11" />
-              <span>mths</span>
-            </div>
+          <div class="field-head">
+            <label>Full Original Loan Term</label>
+            <span class="badge" id="origTermBadge">30y 0m</span>
+          </div>
+          <div class="input-row">
+            <input type="number" id="origYears" value="30" min="1" max="40" />
+            <span>yrs</span>
+            <input type="number" id="origMonths" value="0" min="0" max="11" />
+            <span>mths</span>
           </div>
         </div>
 
-        <div class="row-2">
+        <div class="grid-2" style="margin-bottom:0; gap:10px;">
           <div class="field">
-            <label>Loan Start Month (Est.)</label>
+            <div class="field-head"><label for="startMonth">Loan Start Month (Est.)</label></div>
             <input type="month" id="startMonth" />
           </div>
           <div class="field">
-            <label>Loan End Month (Est.)</label>
+            <div class="field-head"><label for="endMonth">Contract End Month (Est.)</label></div>
             <input type="month" id="endMonth" />
           </div>
         </div>
 
-        <div class="fixed-header">
-          <span>Past Fixed-Rate Periods (Optional)</span>
-          <button class="btn" type="button" id="addFixedBtn">+ Add Fixed Period</button>
+        <div class="field">
+          <div class="field-head">
+            <label>Past Fixed-Rate Periods (Optional)</label>
+            <button type="button" id="addFixedBtn" class="primary" style="padding:4px 10px; font-size:0.78rem;">+ Add Fixed Period</button>
+          </div>
+          <div class="fixed-list" id="fixedList"></div>
         </div>
-        <div id="fixedList"></div>
 
-        <div class="stat-list">
-          <div class="stat-row"><span class="k">Principal Paid Off</span><span class="v green" id="statPctPaid">27.9%</span></div>
-          <div class="stat-row"><span class="k">Principal Paid Down</span><span class="v" id="statAmtPaid">$111,711</span></div>
-          <div class="stat-row"><span class="k">Elapsed Loan Period</span><span class="v" id="statElapsed">12y 5m</span></div>
-          <div class="stat-row"><span class="k">Known Past Fixed Interest</span><span class="v" id="statPastFixed">$0 (None added)</span></div>
-          <div class="stat-row"><span class="k">Elapsed Rate Split</span><span class="v" id="statRateSplit">0 mths fixed / 12y 5m variable</span></div>
+        <div class="mini-stats">
+          <div class="stat-item">
+            <div class="k">Principal Paid Off</div>
+            <div class="v green" id="paidOffPct">0.0%</div>
+          </div>
+          <div class="stat-item">
+            <div class="k">Principal Paid Down</div>
+            <div class="v green" id="paidDownAmt">$0</div>
+          </div>
+          <div class="stat-item">
+            <div class="k">Elapsed Loan Period</div>
+            <div class="v" id="elapsedPeriod">0y 0m</div>
+          </div>
+          <div class="stat-item">
+            <div class="k">Known Past Fixed Interest</div>
+            <div class="v" id="pastFixedInt">$0</div>
+          </div>
+          <div class="stat-item" style="grid-column: span 2;">
+            <div class="k">Elapsed Rate Split</div>
+            <div class="v" id="elapsedSplit">0 mths fixed / 0 mths variable</div>
+          </div>
         </div>
       </section>
     </div>
 
-    <!-- Bottom Deep Statistics Section -->
-    <section class="deep-section">
-      <div class="section-title">3. Deep Loan Statistics &amp; Analytics</div>
+    <section class="card">
+      <h2>3. Deep Loan Statistics, Offset Analytics & Rate Stress Tests</h2>
 
-      <div class="stats-grid-3">
-        <!-- Deep Stat Card 1: Amortisation & Pace -->
-        <div class="stat-card">
-          <h3>Amortisation &amp; Historical Pace</h3>
-          <div class="stat-list" style="border-top:none; margin-top:0; padding-top:0;">
-            <div class="stat-row"><span class="k">Avg. Principal Paid / Month</span><span class="v" id="deepAvgPrin">$750/mo</span></div>
-            <div class="stat-row"><span class="k">Pace vs. Straight-Line Schedule</span><span class="v" id="deepLinearPace">-$26,178 (Behind)</span></div>
-            <div class="stat-row"><span class="k">Current Payment Split (P / I)</span><span class="v" id="deepSplitPct">31.5% P / 68.5% I</span></div>
-            <div class="stat-row"><span class="k">Daily Interest Burn</span><span class="v" id="deepDailyInt">$52.05/day</span></div>
-            <div class="stat-row"><span class="k">Annual Interest Run-Rate</span><span class="v" id="deepAnnualInt">$18,998/yr</span></div>
-            <div class="stat-row"><span class="k">50% Principal Milestone</span><span class="v" id="deepHalfMilestone">Est. 6y 4m</span></div>
-          </div>
+      <div class="deep-grid">
+        <div class="deep-box">
+          <div class="dk">Interest-Bearing Balance</div>
+          <div class="dv" id="statNetPrincipal">$0</div>
+          <div class="ds" id="statOffsetCov">Offset covers 0.0% of balance</div>
         </div>
 
-        <!-- Deep Stat Card 2: Offset & Extra Impact -->
-        <div class="stat-card">
-          <h3>Offset &amp; Extra Repayment Impact</h3>
-          <div class="stat-list" style="border-top:none; margin-top:0; padding-top:0;">
-            <div class="stat-row"><span class="k">Interest-Bearing Balance</span><span class="v" id="deepIntBearing">$288,289</span></div>
-            <div class="stat-row"><span class="k">Effective Interest Rate</span><span class="v" id="deepEffRate">6.59%</span></div>
-            <div class="stat-row"><span class="k">Offset Coverage Ratio</span><span class="v" id="deepOffsetCov">0.0%</span></div>
-            <div class="stat-row"><span class="k">100% Offset Target Gap</span><span class="v" id="deepOffsetGap">$288,289</span></div>
-            <div class="stat-row"><span class="k">Offset Monthly Interest Saved</span><span class="v green" id="deepOffsetMonthly">$0.00/mo</span></div>
-            <div class="stat-row"><span class="k">Time Shaved Off Loan</span><span class="v green" id="deepTimeShaved">0y 0m</span></div>
-          </div>
+        <div class="deep-box">
+          <div class="dk">Effective Interest Rate</div>
+          <div class="dv" id="statEffRate">0.00%</div>
+          <div class="ds" id="statPreTaxYield">Pre-tax savings equiv (39% tax): 0.00%</div>
         </div>
 
-        <!-- Deep Stat Card 3: Lifetime Totals & Ratios -->
-        <div class="stat-card">
-          <h3>Lifetime Totals &amp; Ratios</h3>
-          <div class="stat-list" style="border-top:none; margin-top:0; padding-top:0;">
-            <div class="stat-row"><span class="k">Future Interest-to-Principal</span><span class="v" id="deepIntToPrin">69.1%</span></div>
-            <div class="stat-row"><span class="k">Baseline Remaining Interest</span><span class="v" id="deepBaseInt">$199,291</span></div>
-            <div class="stat-row"><span class="k">Elapsed Term Percentage</span><span class="v" id="deepElapsedPct">41.4%</span></div>
-            <div class="stat-row"><span class="k">Annual Required Repayments</span><span class="v" id="deepAnnualReq">$27,730/yr</span></div>
-            <div class="stat-row"><span class="k">Annual Total Cash Outlay</span><span class="v" id="deepAnnualTotal">$27,730/yr</span></div>
-            <div class="stat-row"><span class="k">Projected Payoff Month</span><span class="v" id="deepPayoffDate">—</span></div>
-          </div>
+        <div class="deep-box">
+          <div class="dk">Offset Interest Saved (Monthly / Daily)</div>
+          <div class="dv" id="statOffsetSaveMo">$0.00 / mo</div>
+          <div class="ds" id="statOffsetSaveDay">$0.00 / day saved via offset</div>
+        </div>
+
+        <div class="deep-box">
+          <div class="dk">Daily & Annual Interest Burn</div>
+          <div class="dv" id="statDailyBurn">$0.00 / day</div>
+          <div class="ds" id="statAnnualBurn">$0 / yr at current net balance</div>
+        </div>
+
+        <div class="deep-box">
+          <div class="dk">Current Payment Split (P vs I)</div>
+          <div class="dv" id="statPaySplit">0% P / 0% I</div>
+          <div class="ds" id="statPaySplitSub">Principal vs interest share today</div>
+        </div>
+
+        <div class="deep-box">
+          <div class="dk">Avg. Historical Principal Reduction</div>
+          <div class="dv" id="statAvgPrinMo">$0 / mo</div>
+          <div class="ds" id="statPaceCompare">Linear pace: $0 / mo</div>
+        </div>
+
+        <div class="deep-box">
+          <div class="dk">Future Interest-to-Principal Ratio</div>
+          <div class="dv" id="statIntRatio">0.00x</div>
+          <div class="ds" id="statBaseVsAdj">Baseline interest: $0</div>
+        </div>
+
+        <div class="deep-box">
+          <div class="dk">Projected Payoff & 50% Milestone</div>
+          <div class="dv" id="statPayoffDate">—</div>
+          <div class="ds" id="statHalfwayDate">50% balance milestone: —</div>
         </div>
       </div>
 
-      <!-- Rate Stress Test Table -->
-      <div class="card">
-        <h2>Interest Rate Sensitivity &amp; Stress Test <span class="metric-pill">Based on Active Balance</span></h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Rate Scenario</th>
-                <th>Interest Rate</th>
-                <th>Monthly Repayment</th>
-                <th>Monthly Change</th>
-                <th>Remaining Interest</th>
-                <th>Est. Payoff</th>
-              </tr>
-            </thead>
-            <tbody id="stressTableBody"></tbody>
-          </table>
-        </div>
+      <h3 style="font-size:0.95rem; margin: 12px 0 6px;">Interest Rate Sensitivity & Stress Test</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rate Scenario</th>
+              <th>Interest Rate</th>
+              <th>Required Monthly</th>
+              <th>Monthly Change</th>
+              <th>Remaining Interest</th>
+              <th>Est. Payoff Time</th>
+            </tr>
+          </thead>
+          <tbody id="stressTableBody"></tbody>
+        </table>
       </div>
     </section>
 
-    <!-- Bottom Footer with SW Version & Disclaimer -->
     <footer>
-      <div class="version-badge">
-        <span class="version-dot"></span>
-        <span id="swVersionText">App Version: Loading...</span>
-      </div>
-      <div class="disclaimer-text">Designed by Fadi Jabraiel using Google AI</div>
+      <div>Designed by Fadi Jabraiel using Google AI</div>
+      <div class="version-pill" id="appVersionBadge">App Version: v1</div>
     </footer>
   </div>
 
   <script>
-    const $ = (id) => document.getElementById(id);
+    const $ = id => document.getElementById(id);
+    const fmtMoney = (n, dec = 0) =>
+      (n < 0 ? "-$" : "$") +
+      Math.abs(n).toLocaleString("en-AU", { minimumFractionDigits: dec, maximumFractionDigits: dec });
 
-    const fmtCurrency = (n, dec = 0) => {
-      if (!isFinite(n)) return '$0';
-      return n.toLocaleString('en-AU', {
-        style: 'currency',
-        currency: 'AUD',
-        minimumFractionDigits: dec,
-        maximumFractionDigits: dec
-      });
-    };
-
-    const fmtCompact = (n) => {
-      if (n >= 1000000) return '$' + (n / 1000000).toFixed(2) + 'm';
-      if (n >= 1000) return '$' + Math.round(n / 1000) + 'k';
-      return fmtCurrency(n, 0);
-    };
-
-    const fmtYm = (totalMonths) => {
+    const formatYM = totalMonths => {
       const m = Math.max(0, Math.round(totalMonths));
       const y = Math.floor(m / 12);
       const rem = m % 12;
       return `${y}y ${rem}m`;
     };
 
-    const addMonthsToYm = (ymStr, monthsToAdd) => {
-      if (!ymStr || !ymStr.includes('-')) return '';
-      const [y, m] = ymStr.split('-').map(Number);
-      const total = y * 12 + (m - 1) + Math.round(monthsToAdd);
-      const ny = Math.floor(total / 12);
-      const nm = (total % 12) + 1;
-      return `${ny}-${String(nm).padStart(2, '0')}`;
-    };
-
-    const formatMonthLabel = (ymStr) => {
-      if (!ymStr || !ymStr.includes('-')) return '—';
-      const [y, m] = ymStr.split('-').map(Number);
-      const date = new Date(y, m - 1, 1);
-      return date.toLocaleDateString('en-AU', { month: 'short', year: 'numeric' });
+    const addMonthsToDate = (baseDate, monthsToAdd) => {
+      const d = new Date(baseDate.getFullYear(), baseDate.getMonth() + Math.round(monthsToAdd), 1);
+      return d.toLocaleDateString("en-AU", { month: "short", year: "numeric" });
     };
 
     let fixedPeriods = [];
 
+    function renderVersionBadge() {
+      const meta = document.querySelector('meta[name="app-version"]');
+      const badge = $("appVersionBadge");
+      if (badge) {
+        const ver = meta ? meta.getAttribute("content").trim() : "v1";
+        badge.textContent = `App Version: ${ver}`;
+      }
+    }
+
     function initDates() {
       const now = new Date();
-      const remTotal = (parseInt($('remYears').value) || 0) * 12 + (parseInt($('remMonths').value) || 0);
-      const origTotal = (parseInt($('origYears').value) || 0) * 12 + (parseInt($('origMonths').value) || 0);
-      const elapsed = Math.max(0, origTotal - remTotal);
+      const remM = Number($("remYears").value) * 12 + Number($("remMonths").value);
+      const origM = Number($("origYears").value) * 12 + Number($("origMonths").value);
+      const elapsedM = Math.max(0, origM - remM);
 
-      const curYm = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      $('startMonth').value = addMonthsToYm(curYm, -elapsed);
-      $('endMonth').value = addMonthsToYm(curYm, remTotal);
+      const start = new Date(now.getFullYear(), now.getMonth() - elapsedM, 1);
+      const end = new Date(now.getFullYear(), now.getMonth() + remM, 1);
+
+      $("startMonth").value = `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, "0")}`;
+      $("endMonth").value = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, "0")}`;
     }
 
     function calcMonthlyPayment(principal, annualRate, months) {
       if (principal <= 0 || months <= 0) return 0;
       const r = annualRate / 100 / 12;
       if (r === 0) return principal / months;
-      return (principal * r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
+      return (principal * r) / (1 - Math.pow(1 + r, -months));
     }
 
-    function simulateLoan(balance, annualRate, reqMonthly, offset, extraMonthly, maxMonths = 600) {
-      let bal = Math.max(0, balance);
+    function simulateLoan(principal, annualRate, remMonths, offset, extraMonthly) {
+      const reqPmt = calcMonthlyPayment(principal, annualRate, remMonths);
       const r = annualRate / 100 / 12;
-      let months = 0;
+      let bal = principal;
       let totalInterest = 0;
-      let halfMilestoneMonth = bal <= balance * 0.5 ? 0 : null;
-      const yearlyPoints = [{ year: 0, principal: bal, cumInterest: 0 }];
+      let months = 0;
+      let halfwayMonth = null;
+      const halfTarget = principal * 0.5;
+      const yearly = [];
+      let yrPrin = 0;
+      let yrInt = 0;
 
-      while (bal > 0.01 && months < maxMonths) {
+      while (bal > 0.01 && months < 600) {
         months++;
-        const effectiveBal = Math.max(0, bal - offset);
-        const interest = effectiveBal * r;
-        let payment = reqMonthly + extraMonthly;
-        if (payment <= interest && r > 0) {
-          // Guard against infinite loop if payment doesn't cover interest
-          totalInterest += interest;
-          if (months % 12 === 0) {
-            yearlyPoints.push({ year: months / 12, principal: bal, cumInterest: totalInterest });
-          }
-          continue;
+        const interestBearing = Math.max(0, bal - offset);
+        const interest = interestBearing * r;
+        let totalPmt = reqPmt + extraMonthly;
+        let prinPaid = totalPmt - interest;
+
+        if (prinPaid >= bal) {
+          prinPaid = bal;
+          totalPmt = prinPaid + interest;
         }
-        let principalPaid = payment - interest;
-        if (principalPaid > bal) {
-          principalPaid = bal;
-        }
-        bal -= principalPaid;
+
+        bal -= prinPaid;
         totalInterest += interest;
+        yrPrin += prinPaid;
+        yrInt += interest;
 
-        if (halfMilestoneMonth === null && bal <= balance * 0.5) {
-          halfMilestoneMonth = months;
+        if (halfwayMonth === null && bal <= halfTarget) {
+          halfwayMonth = months;
         }
+
         if (months % 12 === 0 || bal <= 0.01) {
-          yearlyPoints.push({
-            year: +(months / 12).toFixed(2),
-            principal: Math.max(0, bal),
-            cumInterest: totalInterest
+          yearly.push({
+            year: Math.ceil(months / 12),
+            principal: yrPrin,
+            interest: yrInt,
+            balance: Math.max(0, bal)
           });
+          yrPrin = 0;
+          yrInt = 0;
         }
       }
 
-      return { months, totalInterest, yearlyPoints, halfMilestoneMonth };
-    }
-
-    function renderChart(points) {
-      const svg = $('balanceChart');
-      if (!points || points.length < 2) {
-        svg.innerHTML = '';
-        return;
-      }
-      const w = 700, h = 180;
-      const padL = 48, padR = 14, padT = 12, padB = 24;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-
-      const maxVal = Math.max(
-        ...points.map((p) => Math.max(p.principal, p.cumInterest)),
-        1000
-      );
-      const maxYr = Math.max(points[points.length - 1].year, 1);
-
-      const xOf = (yr) => padL + (yr / maxYr) * plotW;
-      const yOf = (val) => padT + plotH - (val / maxVal) * plotH;
-
-      const prinPath = points
-        .map((p, i) => `${i === 0 ? 'M' : 'L'}${xOf(p.year).toFixed(1)},${yOf(p.principal).toFixed(1)}`)
-        .join(' ');
-      const intPath = points
-        .map((p, i) => `${i === 0 ? 'M' : 'L'}${xOf(p.year).toFixed(1)},${yOf(p.cumInterest).toFixed(1)}`)
-        .join(' ');
-
-      const gridLines = [0, 0.25, 0.5, 0.75, 1]
-        .map((t) => {
-          const val = maxVal * t;
-          const y = yOf(val).toFixed(1);
-          return `
-            <line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3" />
-            <text x="${padL - 6}" y="${+y + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${fmtCompact(val)}</text>
-          `;
-        })
-        .join('');
-
-      const yrTicks = [0, 0.25, 0.5, 0.75, 1]
-        .map((t) => {
-          const yr = Math.round(maxYr * t);
-          const x = xOf(maxYr * t).toFixed(1);
-          return `<text x="${x}" y="${h - 4}" text-anchor="middle" font-size="10" fill="var(--muted)">Yr ${yr}</text>`;
-        })
-        .join('');
-
-      svg.innerHTML = `
-        ${gridLines}
-        ${yrTicks}
-        <path d="${prinPath}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" />
-        <path d="${intPath}" fill="none" stroke="var(--amber)" stroke-width="3" stroke-linecap="round" />
-      `;
+      return { reqPmt, totalInterest, months, halfwayMonth, yearly };
     }
 
     function renderFixedPeriods() {
-      const container = $('fixedList');
-      container.innerHTML = '';
-      fixedPeriods.forEach((fp, idx) => {
-        const row = document.createElement('div');
-        row.className = 'fixed-item';
+      const list = $("fixedList");
+      list.innerHTML = "";
+      fixedPeriods.forEach((p, idx) => {
+        const row = document.createElement("div");
+        row.className = "fixed-row";
         row.innerHTML = `
-          <input type="text" placeholder="Label (e.g. Fixed 1)" value="${fp.label}" data-idx="${idx}" data-key="label" />
-          <input type="number" placeholder="Rate %" step="0.01" value="${fp.rate}" data-idx="${idx}" data-key="rate" />
-          <input type="number" placeholder="Yrs" min="0" value="${fp.years}" data-idx="${idx}" data-key="years" />
-          <input type="number" placeholder="Mths" min="0" max="11" value="${fp.months}" data-idx="${idx}" data-key="months" />
-          <button type="button" class="btn-del" data-del="${idx}">×</button>
+          <input type="text" value="${p.label}" placeholder="Label (e.g. Fixed 1)" data-idx="${idx}" data-field="label" />
+          <input type="number" value="${p.rate}" step="0.01" min="0" placeholder="Rate %" data-idx="${idx}" data-field="rate" />
+          <input type="number" value="${p.years}" min="0" max="30" placeholder="Yrs" data-idx="${idx}" data-field="years" />
+          <input type="number" value="${p.months}" min="0" max="11" placeholder="Mths" data-idx="${idx}" data-field="months" />
+          <button type="button" class="btn-del" data-del="${idx}">✕</button>
         `;
-        container.appendChild(row);
+        list.appendChild(row);
       });
 
-      container.querySelectorAll('input').forEach((inp) => {
-        inp.addEventListener('input', (e) => {
-          const i = +e.target.dataset.idx;
-          const k = e.target.dataset.key;
-          fixedPeriods[i][k] = k === 'label' ? e.target.value : parseFloat(e.target.value) || 0;
-          calculate();
+      list.querySelectorAll("input").forEach(inp => {
+        inp.addEventListener("input", e => {
+          const i = Number(e.target.dataset.idx);
+          const f = e.target.dataset.field;
+          fixedPeriods[i][f] = f === "label" ? e.target.value : Number(e.target.value);
+          recalculate();
         });
       });
-      container.querySelectorAll('[data-del]').forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          fixedPeriods.splice(+e.target.dataset.del, 1);
+
+      list.querySelectorAll(".btn-del").forEach(btn => {
+        btn.addEventListener("click", e => {
+          const i = Number(e.target.dataset.del);
+          fixedPeriods.splice(i, 1);
           renderFixedPeriods();
-          calculate();
+          recalculate();
         });
       });
     }
 
-    function calculate() {
-      const remBalance = Math.max(0, parseFloat($('remBalance').value) || 0);
-      const remYears = Math.max(0, parseInt($('remYears').value) || 0);
-      const remMonths = Math.max(0, parseInt($('remMonths').value) || 0);
-      const remTotalMonths = remYears * 12 + remMonths;
+    function drawChart(yearly) {
+      const canvas = $("amortChart");
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = 240 * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
 
-      const rate = Math.max(0, parseFloat($('interestRate').value) || 0);
-      const offset = Math.max(0, parseFloat($('offsetBalance').value) || 0);
-      const extra = Math.max(0, parseFloat($('extraMonthly').value) || 0);
+      const w = rect.width;
+      const h = 240;
+      const padL = 54, padR = 14, padT = 16, padB = 28;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
 
-      const origBalance = Math.max(0, parseFloat($('origBalance').value) || 0);
-      const origYears = Math.max(0, parseInt($('origYears').value) || 0);
-      const origMonths = Math.max(0, parseInt($('origMonths').value) || 0);
-      const origTotalMonths = origYears * 12 + origMonths;
+      ctx.clearRect(0, 0, w, h);
+      if (!yearly.length) return;
 
-      // Update slider badges
-      $('lblRemBal').textContent = fmtCompact(remBalance);
-      $('lblRemTerm').textContent = fmtYm(remTotalMonths);
-      $('lblRate').textContent = rate.toFixed(2) + '%';
-      $('lblOffset').textContent = fmtCompact(offset);
-      $('lblExtra').textContent = fmtCurrency(extra, 0) + '/mo';
+      const maxVal = Math.max(...yearly.map(d => d.principal + d.interest), 1);
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      const gridColor = isDark ? "#26334d" : "#e2e8f0";
+      const textColor = isDark ? "#94a3b8" : "#64748b";
 
-      // Required monthly repayment (strictly from remaining balance, rate, remaining term)
-      const reqMonthly = calcMonthlyPayment(remBalance, rate, remTotalMonths);
+      ctx.strokeStyle = gridColor;
+      ctx.fillStyle = textColor;
+      ctx.font = "11px sans-serif";
+      ctx.textAlign = "right";
 
-      // Baseline simulation (no offset, no extra) vs Active simulation
-      const baselineSim = simulateLoan(remBalance, rate, reqMonthly, 0, 0, Math.max(600, remTotalMonths + 12));
-      const activeSim = simulateLoan(remBalance, rate, reqMonthly, offset, extra, Math.max(600, remTotalMonths + 12));
+      for (let i = 0; i <= 4; i++) {
+        const y = padT + (plotH * i) / 4;
+        const val = maxVal * (1 - i / 4);
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(w - padR, y);
+        ctx.stroke();
+        ctx.fillText(`$${Math.round(val / 1000)}k`, padL - 6, y + 4);
+      }
 
-      const futureSaved = Math.max(0, baselineSim.totalInterest - activeSim.totalInterest);
-      const remTotalPayable = remBalance + activeSim.totalInterest;
+      const barGap = 4;
+      const barW = Math.max(4, plotW / yearly.length - barGap);
 
-      // Current month breakdown
-      const intBearingBal = Math.max(0, remBalance - offset);
-      const curMonthInterest = intBearingBal * (rate / 100 / 12);
-      const curMonthPrincipal = Math.max(0, reqMonthly - curMonthInterest);
+      yearly.forEach((d, idx) => {
+        const x = padL + idx * (plotW / yearly.length) + barGap / 2;
+        const prinH = (d.principal / maxVal) * plotH;
+        const intH = (d.interest / maxVal) * plotH;
 
-      // Hero & Card 1 outputs
-      $('heroMonthly').textContent = fmtCurrency(reqMonthly, 2);
-      $('heroTotalOutlay').textContent = fmtCurrency(reqMonthly + extra, 2);
-      $('kpiRemInterest').textContent = fmtCurrency(activeSim.totalInterest, 0);
-      $('kpiRemTotal').textContent = fmtCurrency(remTotalPayable, 0);
-      $('kpiPayoffTime').textContent = fmtYm(activeSim.months);
-      $('kpiInterestSaved').textContent = fmtCurrency(futureSaved, 0);
+        ctx.fillStyle = "#3b82f6";
+        ctx.fillRect(x, padT + plotH - prinH, barW, prinH);
 
-      $('statCurInterest').textContent = fmtCurrency(curMonthInterest, 2);
-      $('statCurPrincipal').textContent = fmtCurrency(curMonthPrincipal, 2);
-      $('statFortnightly').textContent = fmtCurrency((reqMonthly * 12) / 26, 2);
-      $('statWeekly').textContent = fmtCurrency((reqMonthly * 12) / 52, 2);
-      $('statSavedInline').textContent = fmtCurrency(futureSaved, 0);
+        ctx.fillStyle = "#f59e0b";
+        ctx.fillRect(x, padT + plotH - prinH - intH, barW, intH);
 
-      renderChart(activeSim.yearlyPoints);
-
-      // Card 2: Original loan & elapsed stats
-      const paidDown = Math.max(0, origBalance - remBalance);
-      const pctPaid = origBalance > 0 ? (paidDown / origBalance) * 100 : 0;
-      const elapsedMonths = Math.max(0, origTotalMonths - remTotalMonths);
-
-      $('statPctPaid').textContent = pctPaid.toFixed(1) + '%';
-      $('statAmtPaid').textContent = fmtCurrency(paidDown, 0);
-      $('statElapsed').textContent = fmtYm(elapsedMonths);
-
-      // Past fixed-rate estimation
-      let fixedMonthsTotal = 0;
-      let estFixedInterest = 0;
-      let rollingBal = origBalance;
-      fixedPeriods.forEach((fp) => {
-        const m = (fp.years || 0) * 12 + (fp.months || 0);
-        if (m > 0 && rollingBal > 0) {
-          fixedMonthsTotal += m;
-          const approxAvgBal = Math.max(remBalance, rollingBal - (paidDown * (m / Math.max(1, elapsedMonths))) * 0.5);
-          estFixedInterest += approxAvgBal * ((fp.rate || 0) / 100 / 12) * m;
-          rollingBal = Math.max(remBalance, rollingBal - paidDown * (m / Math.max(1, elapsedMonths)));
+        if (yearly.length <= 15 || idx % Math.ceil(yearly.length / 10) === 0) {
+          ctx.fillStyle = textColor;
+          ctx.textAlign = "center";
+          ctx.fillText(`Y${d.year}`, x + barW / 2, h - 8);
         }
       });
+    }
 
-      const varElapsedMonths = Math.max(0, elapsedMonths - fixedMonthsTotal);
-      $('statPastFixed').textContent =
-        fixedMonthsTotal > 0 ? `${fmtCurrency(estFixedInterest, 0)} (Est.)` : '$0 (None added)';
-      $('statRateSplit').textContent = `${fixedMonthsTotal} mths fixed / ${fmtYm(varElapsedMonths)} variable`;
+    function recalculate() {
+      const remBal = Math.max(0, Number($("remBalance").value) || 0);
+      const remY = Math.max(0, Number($("remYears").value) || 0);
+      const remM = Math.max(0, Number($("remMonths").value) || 0);
+      const remTotalM = Math.max(1, remY * 12 + remM);
+      const rate = Math.max(0, Number($("interestRate").value) || 0);
+      const offset = Math.max(0, Number($("offsetBalance").value) || 0);
+      const extra = Math.max(0, Number($("extraMonthly").value) || 0);
 
-      // Deep Statistics Section (Bottom)
-      const avgPrinPerMonth = elapsedMonths > 0 ? paidDown / elapsedMonths : 0;
-      const expectedLinearPaid = origTotalMonths > 0 ? origBalance * (elapsedMonths / origTotalMonths) : 0;
-      const paceDiff = paidDown - expectedLinearPaid;
+      const origBal = Math.max(0, Number($("origBalance").value) || 0);
+      const origY = Math.max(0, Number($("origYears").value) || 0);
+      const origM = Math.max(0, Number($("origMonths").value) || 0);
+      const origTotalM = Math.max(1, origY * 12 + origM);
 
-      $('deepAvgPrin').textContent = fmtCurrency(avgPrinPerMonth, 0) + '/mo';
-      $('deepLinearPace').textContent =
-        (paceDiff >= 0 ? '+' : '-') + fmtCurrency(Math.abs(paceDiff), 0) + (paceDiff >= 0 ? ' (Ahead)' : ' (Behind)');
-      $('deepLinearPace').className = 'v ' + (paceDiff >= 0 ? 'green' : '');
+      $("remBalanceBadge").textContent = fmtMoney(remBal);
+      $("remTermBadge").textContent = formatYM(remTotalM);
+      $("rateBadge").textContent = `${rate.toFixed(2)}%`;
+      $("offsetBadge").textContent = fmtMoney(offset);
+      $("extraBadge").textContent = `${fmtMoney(extra)}/mo`;
+      $("origBalanceBadge").textContent = fmtMoney(origBal);
+      $("origTermBadge").textContent = formatYM(origTotalM);
 
-      const prinPct = reqMonthly > 0 ? (curMonthPrincipal / reqMonthly) * 100 : 0;
-      const intPct = reqMonthly > 0 ? (curMonthInterest / reqMonthly) * 100 : 0;
-      $('deepSplitPct').textContent = `${prinPct.toFixed(1)}% P / ${intPct.toFixed(1)}% I`;
+      const baseSim = simulateLoan(remBal, rate, remTotalM, 0, 0);
+      const adjSim = simulateLoan(remBal, rate, remTotalM, offset, extra);
 
-      const dailyInt = (intBearingBal * (rate / 100)) / 365;
-      $('deepDailyInt').textContent = fmtCurrency(dailyInt, 2) + '/day';
-      $('deepAnnualInt').textContent = fmtCurrency(intBearingBal * (rate / 100), 0) + '/yr';
-      $('deepHalfMilestone').textContent =
-        activeSim.halfMilestoneMonth === 0
-          ? 'Already Reached'
-          : activeSim.halfMilestoneMonth
-          ? 'Est. ' + fmtYm(activeSim.halfMilestoneMonth)
-          : '—';
+      const interestSaved = Math.max(0, baseSim.totalInterest - adjSim.totalInterest);
+      const monthsSaved = Math.max(0, baseSim.months - adjSim.months);
 
-      // Deep Card 2: Offset & Extra
-      const effRate = remBalance > 0 ? (intBearingBal / remBalance) * rate : 0;
-      const offsetCov = remBalance > 0 ? Math.min(100, (offset / remBalance) * 100) : 0;
-      const offsetGap = Math.max(0, remBalance - offset);
-      const offsetMonthlySaved = Math.min(remBalance, offset) * (rate / 100 / 12);
-      const timeShaved = Math.max(0, baselineSim.months - activeSim.months);
+      $("reqMonthly").textContent = fmtMoney(adjSim.reqPmt, 2);
+      $("totalMonthlySub").textContent = `Total monthly outflow (with extra): ${fmtMoney(adjSim.reqPmt + extra, 2)}`;
+      $("remInterest").textContent = fmtMoney(adjSim.totalInterest);
+      $("remTotal").textContent = fmtMoney(remBal + adjSim.totalInterest);
+      $("payoffTime").textContent = formatYM(adjSim.months);
+      $("heroInterestSaved").textContent = fmtMoney(interestSaved);
+      $("heroTimeSaved").textContent = formatYM(monthsSaved);
 
-      $('deepIntBearing').textContent = fmtCurrency(intBearingBal, 0);
-      $('deepEffRate').textContent = effRate.toFixed(2) + '%';
-      $('deepOffsetCov').textContent = offsetCov.toFixed(1) + '%';
-      $('deepOffsetGap').textContent = fmtCurrency(offsetGap, 0);
-      $('deepOffsetMonthly').textContent = fmtCurrency(offsetMonthlySaved, 2) + '/mo';
-      $('deepTimeShaved').textContent = fmtYm(timeShaved);
+      const netBal = Math.max(0, remBal - offset);
+      const curInt = netBal * (rate / 100 / 12);
+      const curPrin = Math.max(0, adjSim.reqPmt + extra - curInt);
+      $("curMonthInterest").textContent = fmtMoney(curInt, 2);
+      $("curMonthPrincipal").textContent = fmtMoney(curPrin, 2);
+      $("fortnightlyVal").textContent = `${fmtMoney((adjSim.reqPmt * 12) / 26, 2)} / ${fmtMoney(adjSim.reqPmt / 2, 2)}`;
+      $("weeklyVal").textContent = `${fmtMoney((adjSim.reqPmt * 12) / 52, 2)} / ${fmtMoney(adjSim.reqPmt / 4, 2)}`;
 
-      // Deep Card 3: Lifetime Totals & Ratios
-      const intToPrin = remBalance > 0 ? (activeSim.totalInterest / remBalance) * 100 : 0;
-      const elapsedPct = origTotalMonths > 0 ? (elapsedMonths / origTotalMonths) * 100 : 0;
+      const paidDown = Math.max(0, origBal - remBal);
+      const paidPct = origBal > 0 ? (paidDown / origBal) * 100 : 0;
+      const elapsedM = Math.max(0, origTotalM - remTotalM);
 
-      $('deepIntToPrin').textContent = intToPrin.toFixed(1) + '%';
-      $('deepBaseInt').textContent = fmtCurrency(baselineSim.totalInterest, 0);
-      $('deepElapsedPct').textContent = elapsedPct.toFixed(1) + '%';
-      $('deepAnnualReq').textContent = fmtCurrency(reqMonthly * 12, 0) + '/yr';
-      $('deepAnnualTotal').textContent = fmtCurrency((reqMonthly + extra) * 12, 0) + '/yr';
+      $("paidOffPct").textContent = `${paidPct.toFixed(1)}%`;
+      $("paidDownAmt").textContent = fmtMoney(paidDown);
+      $("elapsedPeriod").textContent = formatYM(elapsedM);
+
+      let fixedMonthsSum = 0;
+      let fixedInterestEst = 0;
+      let runningBal = origBal;
+      fixedPeriods.forEach(fp => {
+        const m = (Number(fp.years) || 0) * 12 + (Number(fp.months) || 0);
+        const r = (Number(fp.rate) || 0) / 100 / 12;
+        const pmt = calcMonthlyPayment(runningBal, Number(fp.rate) || 0, Math.max(1, origTotalM - fixedMonthsSum));
+        for (let i = 0; i < m && runningBal > 0; i++) {
+          const intPart = runningBal * r;
+          const prinPart = Math.min(runningBal, Math.max(0, pmt - intPart));
+          fixedInterestEst += intPart;
+          runningBal -= prinPart;
+        }
+        fixedMonthsSum += m;
+      });
+
+      const varMonths = Math.max(0, elapsedM - fixedMonthsSum);
+      $("pastFixedInt").textContent = fixedPeriods.length ? fmtMoney(fixedInterestEst) : "$0 (None added)";
+      $("elapsedSplit").textContent = `${formatYM(fixedMonthsSum)} fixed / ${formatYM(varMonths)} variable`;
+
+      const offsetCov = remBal > 0 ? Math.min(100, (offset / remBal) * 100) : 0;
+      const effRate = remBal > 0 ? rate * (netBal / remBal) : 0;
+      const preTaxYield = rate / (1 - 0.39);
+      const offsetSaveMo = Math.min(remBal, offset) * (rate / 100 / 12);
+      const offsetSaveDay = (Math.min(remBal, offset) * (rate / 100)) / 365;
+      const dailyBurn = (netBal * (rate / 100)) / 365;
+      const annualBurn = netBal * (rate / 100);
+
+      const totCurPmt = curPrin + curInt;
+      const prinShare = totCurPmt > 0 ? (curPrin / totCurPmt) * 100 : 0;
+      const intShare = totCurPmt > 0 ? (curInt / totCurPmt) * 100 : 0;
+
+      const avgPrinMo = elapsedM > 0 ? paidDown / elapsedM : 0;
+      const linearPaceMo = origTotalM > 0 ? origBal / origTotalM : 0;
+      const intRatio = remBal > 0 ? adjSim.totalInterest / remBal : 0;
 
       const now = new Date();
-      const curYm = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      $('deepPayoffDate').textContent = formatMonthLabel(addMonthsToYm(curYm, activeSim.months));
+      $("statNetPrincipal").textContent = fmtMoney(netBal);
+      $("statOffsetCov").textContent = `Offset covers ${offsetCov.toFixed(1)}% of balance`;
+      $("statEffRate").textContent = `${effRate.toFixed(2)}%`;
+      $("statPreTaxYield").textContent = `Pre-tax savings equiv (39% tax): ${preTaxYield.toFixed(2)}%`;
+      $("statOffsetSaveMo").textContent = `${fmtMoney(offsetSaveMo, 2)} / mo`;
+      $("statOffsetSaveDay").textContent = `${fmtMoney(offsetSaveDay, 2)} / day saved via offset`;
+      $("statDailyBurn").textContent = `${fmtMoney(dailyBurn, 2)} / day`;
+      $("statAnnualBurn").textContent = `${fmtMoney(annualBurn)} / yr at current net balance`;
+      $("statPaySplit").textContent = `${prinShare.toFixed(1)}% P / ${intShare.toFixed(1)}% I`;
+      $("statPaySplitSub").textContent = `${fmtMoney(curPrin, 2)} principal vs ${fmtMoney(curInt, 2)} interest`;
+      $("statAvgPrinMo").textContent = `${fmtMoney(avgPrinMo, 0)} / mo`;
+      $("statPaceCompare").textContent = `Straight-line schedule pace: ${fmtMoney(linearPaceMo, 0)} / mo`;
+      $("statIntRatio").textContent = `${intRatio.toFixed(2)}x`;
+      $("statBaseVsAdj").textContent = `Baseline interest (no offset/extra): ${fmtMoney(baseSim.totalInterest)}`;
+      $("statPayoffDate").textContent = addMonthsToDate(now, adjSim.months);
+      $("statHalfwayDate").textContent = `50% balance milestone: ${adjSim.halfwayMonth ? addMonthsToDate(now, adjSim.halfwayMonth) : "Reached"}`;
 
-      // Stress Test Table
-      const deltas = [-0.5, -0.25, 0, 0.25, 0.5, 1.0, 2.0];
-      $('stressTableBody').innerHTML = deltas
-        .map((d) => {
-          const testRate = Math.max(0, rate + d);
-          const testReq = calcMonthlyPayment(remBalance, testRate, remTotalMonths);
-          const testSim = simulateLoan(remBalance, testRate, testReq, offset, extra, Math.max(600, remTotalMonths + 12));
-          const diff = testReq - reqMonthly;
-          const label = d === 0 ? 'Current Rate' : (d > 0 ? `+${d.toFixed(2)}%` : `${d.toFixed(2)}%`);
-          return `
-            <tr class="${d === 0 ? 'current-row' : ''}">
-              <td>${label}</td>
-              <td>${testRate.toFixed(2)}%</td>
-              <td>${fmtCurrency(testReq, 2)}</td>
-              <td style="color:${diff > 0 ? 'var(--red)' : diff < 0 ? 'var(--green)' : 'inherit'}">
-                ${diff === 0 ? '—' : (diff > 0 ? '+' : '-') + fmtCurrency(Math.abs(diff), 2)}
-              </td>
-              <td>${fmtCurrency(testSim.totalInterest, 0)}</td>
-              <td>${fmtYm(testSim.months)}</td>
-            </tr>
-          `;
-        })
-        .join('');
+      const deltas = [-0.5, 0, 0.5, 1.0, 1.5, 2.0];
+      const tbody = $("stressTableBody");
+      tbody.innerHTML = "";
+      deltas.forEach(d => {
+        const testRate = Math.max(0, rate + d);
+        const sim = simulateLoan(remBal, testRate, remTotalM, offset, extra);
+        const diff = sim.reqPmt - adjSim.reqPmt;
+        const tr = document.createElement("tr");
+        if (d === 0) tr.className = "highlight-row";
+        tr.innerHTML = `
+          <td>${d === 0 ? "Current Rate" : (d > 0 ? `+${d.toFixed(2)}%` : `${d.toFixed(2)}%`)}</td>
+          <td>${testRate.toFixed(2)}%</td>
+          <td>${fmtMoney(sim.reqPmt, 2)}</td>
+          <td>${d === 0 ? "—" : (diff >= 0 ? `+${fmtMoney(diff, 2)}` : fmtMoney(diff, 2))}</td>
+          <td>${fmtMoney(sim.totalInterest)}</td>
+          <td>${formatYM(sim.months)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      drawChart(adjSim.yearly);
     }
 
-    // Bind sliders & inputs symmetrically
-    function bindSync(inputId, sliderId) {
-      $(inputId).addEventListener('input', () => {
-        $(sliderId).value = $(inputId).value;
-        calculate();
+    function bindSync(numId, rangeId) {
+      $(numId).addEventListener("input", () => {
+        $(rangeId).value = $(numId).value;
+        recalculate();
       });
-      $(sliderId).addEventListener('input', () => {
-        $(inputId).value = $(sliderId).value;
-        calculate();
+      $(rangeId).addEventListener("input", () => {
+        $(numId).value = $(rangeId).value;
+        recalculate();
       });
     }
 
-    bindSync('remBalance', 'remBalanceSlider');
-    bindSync('remYears', 'remYearsSlider');
-    bindSync('interestRate', 'interestRateSlider');
-    bindSync('offsetBalance', 'offsetBalanceSlider');
-    bindSync('extraMonthly', 'extraMonthlySlider');
+    bindSync("remBalance", "remBalanceRange");
+    bindSync("interestRate", "interestRateRange");
+    bindSync("offsetBalance", "offsetBalanceRange");
+    bindSync("extraMonthly", "extraMonthlyRange");
 
-    ['remMonths', 'origBalance', 'origYears', 'origMonths', 'startMonth', 'endMonth'].forEach((id) => {
-      $(id).addEventListener('input', () => {
-        if (id === 'remYears' || id === 'remMonths' || id === 'origYears' || id === 'origMonths') {
-          initDates();
-        }
-        calculate();
+    $("remTotalMonthsRange").addEventListener("input", () => {
+      const tot = Number($("remTotalMonthsRange").value);
+      $("remYears").value = Math.floor(tot / 12);
+      $("remMonths").value = tot % 12;
+      initDates();
+      recalculate();
+    });
+
+    ["remYears", "remMonths"].forEach(id => {
+      $(id).addEventListener("input", () => {
+        const tot = (Number($("remYears").value) || 0) * 12 + (Number($("remMonths").value) || 0);
+        $("remTotalMonthsRange").value = tot;
+        initDates();
+        recalculate();
       });
     });
 
-    $('addFixedBtn').addEventListener('click', () => {
+    ["origBalance", "origYears", "origMonths"].forEach(id => {
+      $(id).addEventListener("input", () => {
+        initDates();
+        recalculate();
+      });
+    });
+
+    $("addFixedBtn").addEventListener("click", () => {
       fixedPeriods.push({ label: `Fixed ${fixedPeriods.length + 1}`, rate: 2.19, years: 2, months: 0 });
       renderFixedPeriods();
-      calculate();
+      recalculate();
     });
 
-    // Theme toggle
-    function syncThemeButton() {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      $('themeToggle').textContent = isDark ? '☀ Light' : '🌙 Dark';
-    }
-    $('themeToggle').addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      syncThemeButton();
+    $("themeToggle").addEventListener("click", () => {
+      const root = document.documentElement;
+      const isDark = root.getAttribute("data-theme") === "dark";
+      root.setAttribute("data-theme", isDark ? "light" : "dark");
+      $("themeToggle").textContent = isDark ? "🌙 Dark" : "☀️ Light";
+      recalculate();
     });
 
-    // Reset button
-    $('resetBtn').addEventListener('click', () => {
-      $('remBalance').value = 288289;
-      $('remBalanceSlider').value = 288289;
-      $('remYears').value = 17;
-      $('remYearsSlider').value = 17;
-      $('remMonths').value = 7;
-      $('interestRate').value = 6.59;
-      $('interestRateSlider').value = 6.59;
-      $('offsetBalance').value = 0;
-      $('offsetBalanceSlider').value = 0;
-      $('extraMonthly').value = 0;
-      $('extraMonthlySlider').value = 0;
-      $('origBalance').value = 400000;
-      $('origYears').value = 30;
-      $('origMonths').value = 0;
+    $("resetBtn").addEventListener("click", () => {
+      $("remBalance").value = 288289;
+      $("remBalanceRange").value = 288289;
+      $("remYears").value = 17;
+      $("remMonths").value = 7;
+      $("remTotalMonthsRange").value = 211;
+      $("interestRate").value = 6.59;
+      $("interestRateRange").value = 6.59;
+      $("offsetBalance").value = 0;
+      $("offsetBalanceRange").value = 0;
+      $("extraMonthly").value = 0;
+      $("extraMonthlyRange").value = 0;
+      $("origBalance").value = 400000;
+      $("origYears").value = 30;
+      $("origMonths").value = 0;
       fixedPeriods = [];
       renderFixedPeriods();
       initDates();
-      calculate();
+      recalculate();
     });
 
-    // Extract & display Service Worker version from sw.js
-    async function loadServiceWorkerVersion() {
-      const el = $('swVersionText');
-      if (!el) return;
-      try {
-        const res = await fetch('./sw.js', { cache: 'no-store' });
-        if (!res.ok) throw new Error('sw.js unavailable');
-        const text = await res.text();
-        const match = text.match(/(?:CACHE_NAME|VERSION|APP_VERSION|version)\s*[:=]\s*['"`]?([^'"`;\s]+)['"`]?/i);
-        if (match && match[1]) {
-          const semver = match[1].match(/v?\d+\.\d+(?:\.\d+)?/i);
-          const cleanVersion = semver
-            ? (semver[0].toLowerCase().startsWith('v') ? semver[0] : 'v' + semver[0])
-            : match[1];
-          el.textContent = `App Version: ${cleanVersion}`;
-        } else {
-          el.textContent = 'App Version: v1.0 (SW Active)';
-        }
-      } catch (err) {
-        el.textContent = 'App Version: Local / Offline';
-      }
-    }
+    window.addEventListener("resize", recalculate);
 
-    // Register Service Worker if supported
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
-    }
-
-    syncThemeButton();
+    renderVersionBadge();
     initDates();
-    calculate();
-    loadServiceWorkerVersion();
+    recalculate();
   </script>
 </body>
 </html>
